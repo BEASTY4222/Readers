@@ -4,7 +4,7 @@ using Readers.Data;
 var builder = WebApplication.CreateBuilder(args);
 // db context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString(".")));// Add services to the container.
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));// Add services to the container.
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -21,6 +21,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
