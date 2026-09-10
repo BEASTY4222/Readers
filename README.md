@@ -7,3 +7,4 @@ Microsoft.EntityFrameworkCore
 Microsoft.AspNetCore.Identity.EntityFrameworkCore
 Microsoft.EntityFrameworkCore.Sqlite
 Microsoft.AspNetCore.Identity.UI
+Microsoft.EntityFrameworkCore.Tools
