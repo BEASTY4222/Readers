@@ -1,6 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using Readers.Data;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+// db context
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString(".")));// Add services to the container.
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
