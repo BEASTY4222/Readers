@@ -1,27 +1,60 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<h2>What data we collect</h2>
-<div>
-    <p1>We collect the following data:</p1>
-    <ul>
-        <li>Information you provide when you create an account or update your profile i.e, your name, email address, and other personal details.</li>
-        <li>Data related to your reading habits and preferences.</li>
-        <li>Technical information such as your IP address, browser type, and operating system.</li>
-    </ul>
-    <p2>We collect data to:</p2>
-    <ul>
-        <li>Provide and improve our services.</li>
-        <li>Personalize your experience.</li>
-        <li>Communicate with you about our services.</li>
-        <li>Keeping the site secured.</li>    
-    </ul>
-    <p3>Your data does not go anywhere then the web server's database.</p3>
-    <p4>For any questions or concerns about our privacy policy, please contact us.</p4>
-    <ul>
-        <li>You can reach us at ivangeorgiev181@gmail.com</li>
-        <li>Or you can contact us by calling this phone number: +359 88 546 6645</li>
-    </ul>
+@section Styles {
+    <link rel="stylesheet" href="~/css/privacy.css" asp-append-version="true" />
+}
+
+<div class="privacy-page">
+    <div class="privacy-container">
+
+        <header class="privacy-header">
+            <span class="badge">Your Privacy</span>
+            <h1>@ViewData["Title"]</h1>
+            <p class="subtitle">How we handle your information on Readers</p>
+        </header>
+
+        <section class="privacy-card">
+            <h2><span class="icon">📖</span> What data we collect</h2>
+            <p>We collect the following data:</p>
+            <ul class="privacy-list">
+                <li>Information you provide when you create an account or update your profile — such as your name, email address, and other personal details.</li>
+                <li>Data related to your reading habits and preferences.</li>
+                <li>Technical information such as your IP address, browser type, and operating system.</li>
+            </ul>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="icon">🎯</span> How we use your data</h2>
+            <p>We collect data to:</p>
+            <ul class="privacy-list">
+                <li>Provide and improve our services.</li>
+                <li>Personalise your experience.</li>
+                <li>Communicate with you about our services.</li>
+                <li>Keep the site secure.</li>
+            </ul>
+            <p class="privacy-note">
+                Your data stays within the web server's database and is not shared anywhere else.
+            </p>
+        </section>
+
+        <section class="privacy-card contact-card">
+            <h2><span class="icon">✉️</span> Contact us</h2>
+            <p>For any questions or concerns about our privacy policy, please reach out:</p>
+            <ul class="contact-list">
+                <li>
+                    <span class="label">Email</span>
+                    <a href="mailto:ivangeorgiev181@gmail.com">ivangeorgiev181@gmail.com</a>
+                </li>
+                <li>
+                    <span class="label">Phone</span>
+                    <a href="tel:+359885466645">+359 88 546 6645</a>
+                </li>
+            </ul>
+        </section>
+
+        <p class="privacy-footer-note">This website is a student project created for educational purposes.</p>
+
+    </div>
 </div>
