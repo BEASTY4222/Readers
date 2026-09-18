@@ -15,6 +15,9 @@ namespace Readers.Data
         public string Title { get; set; } = null!;
 
         [Required]
+        public string? CoverImagePath { get; set; }
+
+        [Required]
         [StringLength(EntityDataLimits.AuthorMaxLength, MinimumLength = EntityDataLimits.AuthorMinLenght)]
         public string Author { get; set; } = null!;
 
