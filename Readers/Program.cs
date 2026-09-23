@@ -5,7 +5,7 @@ using Readers.Data;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-ApplyDBIdentityContext(builder);
+ApplyDBContext(builder);
 
 
 var app = builder.Build();
@@ -40,7 +40,7 @@ app.MapRazorPages()
 app.Run();
 
 
-static void ApplyDBIdentityContext(IHostApplicationBuilder builder)
+static void ApplyDBContext(IHostApplicationBuilder builder)
 {
     string? connectionString = builder.Configuration.GetConnectionString("DevString");
     if (connectionString == null)
