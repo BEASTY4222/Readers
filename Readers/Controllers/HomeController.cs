@@ -21,5 +21,14 @@ namespace Readers.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            char separator = returnUrl.Contains('?') ? '&' : '?';
+            string redirectUrl = $"{returnUrl}{separator}culture={culture}";
+            return LocalRedirect(redirectUrl);
+        }
     }
 }
