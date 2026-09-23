@@ -1,0 +1,16 @@
+﻿@model Readers.Models.ViewModels.LanguageSwitcherViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Readers.Resources
+@inject IStringLocalizer<SharedResources> Localizer
+
+<form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="lang-form">
+    <label for="culture">@Localizer["LanguageLabel"]</label>
+    <select name="culture" id="culture" onchange="this.form.submit();">
+        @foreach (var c in Model.Cultures)
+        {
+            <option value="@c.Name" selected="@(c.Name == Model.CurrentCultureName)">
+                @c.DisplayName
+            </option>
+        }
+    </select>
+</form>
