@@ -26,5 +26,15 @@ namespace Common
         public const int PagesMinLenght = 50;
         public const int PagesMaxLength = 4215;
         /*Book End*/
+
+        /*Author Begin*/
+        public const int NameMinLenght = 2;
+        public const int NameMaxLength = 100;
+
+        public const int CountryMinLenght = 4;
+        public const int CountryMaxLength = 100;
+
+
+        /*Author End*/
     }
 }
