@@ -16,8 +16,6 @@ namespace Readers.Data.DataModels
         [Range(EntityDataLimits.CountryMinLenght, EntityDataLimits.CountryMaxLength)]
         public string? country { get; set; }
 
-        [ForeignKey(nameof(Book))]
-        public int BookId { get; set; }
         public ICollection<Book> Books { get; set; } = null!;
     }
 }
