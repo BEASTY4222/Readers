@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using Common;
 
@@ -18,8 +19,10 @@ namespace Readers.Data.DataModels
         public string? CoverImagePath { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Author))]
         [StringLength(EntityDataLimits.AuthorMaxLength, MinimumLength = EntityDataLimits.AuthorMinLenght)]
-        public string Author { get; set; } = null!;
+        public string AuthorId { get; set; } = null!;
+        public Author Author { get; set; } = null!;
 
         [Required]
         [StringLength(EntityDataLimits.PublishingHouseMaxLength, MinimumLength = EntityDataLimits.PublishingHouseMinLenght)]
