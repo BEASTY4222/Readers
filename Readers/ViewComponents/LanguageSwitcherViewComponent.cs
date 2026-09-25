@@ -17,7 +17,7 @@ namespace Readers.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            IRequestCultureFeature requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            IRequestCultureFeature? requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
 
             // Preserve the current path AND query string so the user lands back where they were
             string returnUrl = HttpContext.Request.Path + HttpContext.Request.QueryString;
