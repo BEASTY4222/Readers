@@ -20,8 +20,7 @@ namespace Readers.Data.DataModels
 
         [Required]
         [ForeignKey(nameof(Author))]
-        [StringLength(EntityDataLimits.AuthorMaxLength, MinimumLength = EntityDataLimits.AuthorMinLenght)]
-        public string AuthorId { get; set; } = null!;
+        public int AuthorId { get; set; }
         public Author Author { get; set; } = null!;
 
         [Required]
