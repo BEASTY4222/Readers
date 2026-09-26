@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Models\**" />
+    <Compile Remove="wwwroot\bookImages\**" />
     <Content Remove="Models\**" />
+    <Content Remove="wwwroot\bookImages\**" />
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="wwwroot\bookImages\**" />
     <None Remove="Models\**" />
+    <None Remove="wwwroot\bookImages\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,10 +25,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\bookImages\" />
   </ItemGroup>
 
 </Project>
