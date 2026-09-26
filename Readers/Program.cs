@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Readers.Data;
 using System.Globalization;
+using Readers.Data.Seed;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ ApplyLocalization(builder, localizationOptions);
 
 
 var app = builder.Build();
+
+// Aplly database seeding
+SeedDB(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -96,4 +100,13 @@ static void ApplyLocalization(IHostApplicationBuilder builder, RequestLocalizati
         new QueryStringRequestCultureProvider(),   // ?culture=bg-BG
         new AcceptLanguageHeaderRequestCultureProvider() // browser's default return based on location language
     };
+}
+
+static void SeedDB(System.IServiceProvider serviceProvider)
+{
+    using (var scope = serviceProvider.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        BookSeeder.SeedAsync(context).Wait();
+    }
 }
