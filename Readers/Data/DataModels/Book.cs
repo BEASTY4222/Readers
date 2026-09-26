@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel.DataAnnotations;
 using Common;
 
 namespace Readers.Data.DataModels
@@ -15,12 +12,11 @@ namespace Readers.Data.DataModels
         [StringLength(EntityDataLimits.TitleMaxLength, MinimumLength = EntityDataLimits.TitleMinLenght)]
         public string Title { get; set; } = null!;
 
-        [Required]
         public string? CoverImagePath { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Author))]
         public int AuthorId { get; set; }
+
         public Author Author { get; set; } = null!;
 
         [Required]
@@ -37,7 +33,7 @@ namespace Readers.Data.DataModels
 
         [Required]
         [Range(EntityDataLimits.PagesMinLenght, EntityDataLimits.PagesMaxLength)]
-        public int pages { get; set; } = 0;
+        public int Pages { get; set; } = 0;
 
         public ICollection<Like> Likes { get; set; } = new List<Like>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();

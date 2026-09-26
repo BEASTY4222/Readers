@@ -14,7 +14,7 @@ namespace Readers.Data.DataModels
         public string Name { get; set; } = null!;
 
         [Range(EntityDataLimits.CountryMinLenght, EntityDataLimits.CountryMaxLength)]
-        public string? country { get; set; }
+        public string? Country { get; set; }
 
         public ICollection<Book> Books { get; set; } = null!;
     }
