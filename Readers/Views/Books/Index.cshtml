@@ -1,6 +1,74 @@
-﻿@page
-@model Readers.Views.Books.IndexModel
+﻿@model List<Readers.Data.DataModels.Book>
 @{
+    ViewData["Title"] = "Books";
 }
 
-<h1>This is the Books page</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/BooksPage.css" asp-append-version="true" />
+}
+
+<div class="books-page">
+    <div class="books-container">
+
+        <header class="books-header">
+            <h1>Books</h1>
+            <p class="subtitle">Discover your next read from the collection</p>
+        </header>
+
+        @if (Model.Count == 0)
+        {
+            <div class="empty-state">
+                <p>No books have been added yet.</p>
+            </div>
+        }
+        else
+        {
+            <div class="books-grid">
+                @foreach (var book in Model)
+                {
+                    <article class="book-card">
+                        <div class="book-cover-wrap">
+                            @if (!string.IsNullOrEmpty(book.CoverImagePath))
+                            {
+                                <img src="@book.CoverImagePath"
+                                     alt="@book.Title cover"
+                                     class="book-cover"
+                                     loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="book-cover book-cover-placeholder">
+                                    <span>@book.Title</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="book-info">
+                            <h3 class="book-title">@book.Title</h3>
+                            <p class="book-author">@book.Author.Name</p>
+
+                            <div class="book-footer">
+                                <span class="book-stat" title="Likes">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                              fill="currentColor" />
+                                    </svg>
+                                    <span>@book.Likes.Count</span>
+                                </span>
+
+                                <span class="book-stat" title="Comments">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+                                              fill="currentColor" />
+                                    </svg>
+                                    <span>@book.Comments.Count</span>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+
+    </div>
+</div>
