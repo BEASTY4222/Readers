@@ -1,0 +1,199 @@
+﻿/* ============================================
+   Books Page
+   ============================================ */
+
+:root {
+    --books-bg: #f7f5f2;
+    --books-card: #ffffff;
+    --books-accent: #7c4d2f;
+    --books-accent-soft: #f0e6dd;
+    --books-text: #2d2a26;
+    --books-muted: #6b6560;
+    --books-border: #e8e2db;
+    --books-heart: #e05a5a;
+    --books-radius: 16px;
+    --books-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --books-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Page wrapper ---------- */
+.books-page {
+    background: var(--books-bg);
+    padding: 3rem 1.25rem 4rem;
+    min-height: 100vh;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--books-text);
+    line-height: 1.6;
+}
+
+.books-container {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.books-header {
+    margin-bottom: 2.5rem;
+}
+
+    .books-header h1 {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 700;
+        margin: 0 0 0.25rem;
+        color: var(--books-text);
+    }
+
+    .books-header .subtitle {
+        color: var(--books-muted);
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* ---------- Grid ---------- */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.75rem;
+}
+
+/* ---------- Card ---------- */
+.book-card {
+    background: var(--books-card);
+    border-radius: var(--books-radius);
+    box-shadow: var(--books-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+    .book-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--books-shadow-hover);
+    }
+
+/* ---------- Cover ---------- */
+.book-cover-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 3; /* standard book proportion */
+    overflow: hidden;
+    background: var(--books-accent-soft);
+}
+
+.book-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.book-cover-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--books-accent);
+    text-align: center;
+}
+
+/* ---------- Info block ---------- */
+.book-info {
+    padding: 1rem 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.book-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--books-text);
+    margin: 0;
+    line-height: 1.3;
+    /* clamp to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.book-author {
+    font-size: 0.85rem;
+    color: var(--books-muted);
+    margin: 0 0 0.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Footer (likes + comments) ---------- */
+.book-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--books-border);
+    margin-top: auto;
+}
+
+.book-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--books-muted);
+    transition: color 0.2s ease;
+}
+
+    .book-stat:hover {
+        color: var(--books-text);
+    }
+
+    /* Heart is red, comment is muted */
+    .book-stat:first-child svg {
+        color: var(--books-heart);
+    }
+
+    .book-stat:last-child svg {
+        color: var(--books-muted);
+    }
+
+/* ---------- Empty state ---------- */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--books-muted);
+    font-size: 1.05rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 700px) {
+    .books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+    }
+
+    .books-page {
+        padding: 2rem 0.9rem 3rem;
+    }
+
+    .book-info {
+        padding: 0.75rem 0.85rem 0.7rem;
+    }
+
+    .book-title {
+        font-size: 0.9rem;
+    }
+
+    .book-author {
+        font-size: 0.75rem;
+    }
+
+    .book-stat {
+        font-size: 0.75rem;
+    }
+}
