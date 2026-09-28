@@ -35,7 +35,7 @@ namespace Readers.Data.DataModels
         [Range(EntityDataLimits.PagesMinLenght, EntityDataLimits.PagesMaxLength)]
         public int Pages { get; set; } = 0;
 
-        public ICollection<Like> Likes { get; set; } = new List<Like>();
-        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
