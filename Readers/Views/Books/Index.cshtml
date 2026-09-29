@@ -5,6 +5,8 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/BooksPage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/SearchPanel.css" asp-append-version="true" />
+
 }
 
 <div class="books-page">
@@ -14,6 +16,8 @@
             <h1>Books</h1>
             <p class="subtitle">Discover your next read from the collection</p>
         </header>
+
+        <partial name="_SearchPanel" />
 
         @if (Model.Count == 0)
         {
