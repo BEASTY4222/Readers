@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Common;
 using Readers.Data;
+using Readers.Data.DataModels;
+using Readers.ViewModels;
 
 namespace Readers.Controllers
 {
@@ -13,18 +16,28 @@ namespace Readers.Controllers
         }
 
         [Route("/Books")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             // Retriving all the books because they arent many as if now 26.09.2026
-            var books = await _context.Books
+            List<Book> books = _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
                 .OrderBy(b => b.Author.Name)
                 .ThenBy(b => b.YearPublished)
-                .ToListAsync();
+                .Take(BookControllerLimits.MaxBooksToDisplay)
+                .ToList();
 
-            return View(books);
+            List<BookViewModel> bookViewModels = books.Select(b => new BookViewModel
+            {
+                CoverImagePath = b.CoverImagePath,
+                Title = b.Title,
+                Author = b.Author,
+                Likes = b.Likes,
+                Comments = b.Comments
+            }).ToList();
+
+            return View(bookViewModels);
         }
     }
 }
