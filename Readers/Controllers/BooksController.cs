@@ -40,13 +40,13 @@ namespace Readers.Controllers
             return View(bookViewModels);
         }
 
-        [HttpGet]
+        //[HttpGet]
         public IActionResult Index([FromQuery] string searchedBook)
         {
             // Retriving all the books because they arent many as if now 26.09.2026
             List<Book> books = _context.Books
                 // big string formatting to remove whitespace and make it easier to search for books with spaces in their titles
-                .Where(b => b.Title.Replace(" ", String.Empty).ToLower().Contains(searchedBook.ToLower()))
+                .Where(b => b.Title.Replace(" ", String.Empty).ToLower().Contains(searchedBook.Replace(" ", String.Empty).ToLower()))
                 .Include(b => b.Author)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
