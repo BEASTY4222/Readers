@@ -22,28 +22,28 @@
         </button>
     </header>
 
-    <form method="get" asp-controller="Books" asp-action="Index" class="search-form">
+    <form method="get" asp-controller="Books" asp-action="Search" class="search-form">
         <div class="search-field">
             <label for="searchTitle">Title</label>
             <input type="text"
                    id="searchTitle"
-                   name="title"
-                   placeholder="e.g. The Hobbit"
+                   name="searchedTitle"
+                   placeholder="e.g. A Game of Thrones"
                    autocomplete="off" />
         </div>
 
         <div class="search-field">
-            <label for="searchAuthor">Author</label>
+            <label for="searchedAuthor">Author</label>
             <input type="text"
-                   id="searchAuthor"
-                   name="author"
-                   placeholder="e.g. Tolkien"
+                   id="searchedAuthor"
+                   name="searchedAuthor"
+                   placeholder="e.g. George R.R. Martin"
                    autocomplete="off" />
         </div>
 
         <div class="search-field">
-            <label for="searchGenre">Genre</label>
-            <select id="searchGenre" name="genre">
+            <label for="searchedGenre">Genre</label>
+            <select id="searchedGenre" name="searchedGenre">
                 <option value="">All genres</option>
                 <option value="Fantasy">Fantasy</option>
                 <option value="Science Fiction">Science Fiction</option>

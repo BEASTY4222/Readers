@@ -40,31 +40,44 @@ namespace Readers.Controllers
             return View(bookViewModels);
         }
 
-        //[HttpGet]
-        public IActionResult Index([FromQuery] string searchedBook)
+        [HttpGet]
+        public IActionResult Search(SearchFormViewModel model)
         {
-            // Retriving all the books because they arent many as if now 26.09.2026
-            List<Book> books = _context.Books
-                // big string formatting to remove whitespace and make it easier to search for books with spaces in their titles
-                .Where(b => b.Title.Replace(" ", String.Empty).ToLower().Contains(searchedBook.Replace(" ", String.Empty).ToLower()))
+            IQueryable<Book> Books = _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
-                .OrderBy(b => b.Author.Name)
-                .ThenBy(b => b.YearPublished)
-                .Take(BookControllerLimits.MaxBooksToDisplay)
-                .ToList();
+                .AsQueryable();
 
-            List<BookViewModel> bookViewModels = books.Select(b => new BookViewModel
+            if (!string.IsNullOrEmpty(model.SearchedTitle))
+            {
+                Books = Books.Where(b => b.Title.Replace(" ", String.Empty).ToLower().Contains(model.SearchedTitle.Replace(" ", String.Empty).ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(model.SearchedAuthor))
+            {
+                Books = Books.Where(b => b.Author.Name.Replace(" ", String.Empty).ToLower().Contains(model.SearchedAuthor.Replace(" ", String.Empty).ToLower()));
+            }
+
+            if(!string.IsNullOrEmpty(model.SearchedGenre))
+            {
+                Books = Books.Where(b => b.Ganre == model.SearchedGenre);
+            }
+
+            Books = Books.Take(BookControllerLimits.MaxBooksToDisplay);
+
+            List<BookViewModel> bookViewModels = Books.Select(b => new BookViewModel
             {
                 CoverImagePath = b.CoverImagePath,
                 Title = b.Title,
                 Author = b.Author,
                 Likes = b.Likes,
                 Comments = b.Comments
-            }).ToList();
+            })
+            .OrderBy(b => b.Author.Name)
+            .ToList();
 
-            return View(bookViewModels);
+            return View("Index",bookViewModels);
         }
     }
 }
