@@ -28,7 +28,7 @@
             <input type="text"
                    id="searchTitle"
                    name="searchedTitle"
-                   placeholder="e.g. A Game of Thrones"
+                   placeholder="@Context.Request.Query["searchedTitle"]"
                    autocomplete="off" />
         </div>
 
@@ -37,8 +37,8 @@
             <input type="text"
                    id="searchedAuthor"
                    name="searchedAuthor"
-                   placeholder="e.g. George R.R. Martin"
-                   autocomplete="off" />
+                   placeholder="@Context.Request.Query["searchedAuthor"]"
+                   autocomplete="on" />
         </div>
 
         <div class="search-field">
