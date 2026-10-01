@@ -1,5 +1,17 @@
-/*HOME PAGE*/
-/* Hero Section */
+/* ============================================
+   Home Page
+   ============================================ */
+
+:root {
+    --home-bg: #f7f5f2;
+    --home-accent: #7c4d2f;
+    --home-accent-hover: #5e3a23;
+    --home-accent-soft: #f0e6dd;
+    --home-text: #2d2a26;
+    --home-muted: #6b6560;
+}
+
+/* ---------- Hero Section ---------- */
 .hero {
     /* Fill the remaining vertical space */
     flex-grow: 1;
@@ -13,7 +25,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #7c4d2f 0%, #5e3a23 60%, #3d2517 100%);
     overflow: hidden;
 }
 
@@ -21,14 +33,14 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15), transparent 50%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1), transparent 50%);
+        background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.12), transparent 50%), radial-gradient(circle at 80% 70%, rgba(240, 230, 221, 0.15), transparent 50%);
         pointer-events: none;
     }
 
 .hero-content {
     max-width: 700px;
     text-align: center;
-    color: #fff;
+    color: #ffffff;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.8s ease-out;
@@ -40,7 +52,7 @@
     letter-spacing: -1px;
     margin-bottom: 1.25rem;
     line-height: 1.1;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .hero-subtitle {
@@ -54,24 +66,25 @@
 .hero-btn {
     display: inline-block;
     padding: 0.9rem 2.5rem;
-    background: #fff;
-    color: #764ba2;
+    background: #f7f5f2;
+    color: var(--home-accent);
     font-weight: 600;
     font-size: 1rem;
     border-radius: 50px;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
     .hero-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-        color: #5a3680;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        background: #ffffff;
+        color: var(--home-accent-hover);
         text-decoration: none;
     }
 
-/* Animation */
+/* ---------- Animation ---------- */
 @keyframes fadeInUp {
     from {
         opacity: 0;
