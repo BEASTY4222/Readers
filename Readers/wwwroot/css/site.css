@@ -29,3 +29,149 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* ---------- Theme variables ---------- */
+:root {
+    --site-bg: #f7f5f2;
+    --site-card: #ffffff;
+    --site-accent: #7c4d2f;
+    --site-accent-hover: #5e3a23;
+    --site-accent-soft: #f0e6dd;
+    --site-text: #2d2a26;
+    --site-muted: #6b6560;
+    --site-border: #e8e2db;
+}
+
+/* ---------- Navbar brand ---------- */
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: var(--site-accent);
+    font-weight: 700;
+}
+
+    a.navbar-brand:hover {
+        color: var(--site-accent-hover);
+    }
+
+/* ---------- Links ---------- */
+a {
+    color: var(--site-accent);
+}
+
+    a:hover {
+        color: var(--site-accent-hover);
+    }
+
+/* ---------- Primary buttons ---------- */
+.btn-primary {
+    color: #fff;
+    background-color: var(--site-accent);
+    border-color: var(--site-accent);
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        background-color: var(--site-accent-hover);
+        border-color: var(--site-accent-hover);
+        color: #fff;
+    }
+
+    .btn-primary:focus {
+        box-shadow: 0 0 0 0.2rem rgba(124, 77, 47, 0.35);
+    }
+
+/* ---------- Nav pills ---------- */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: var(--site-accent);
+    border-color: var(--site-accent);
+}
+
+.nav-pills .nav-link {
+    color: var(--site-accent);
+}
+
+    .nav-pills .nav-link:hover {
+        color: var(--site-accent-hover);
+        background-color: var(--site-accent-soft);
+    }
+
+/* ---------- Borders ---------- */
+.border-top {
+    border-top: 1px solid var(--site-border);
+}
+
+.border-bottom {
+    border-bottom: 1px solid var(--site-border);
+}
+
+/* ---------- Shadows ---------- */
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+/* ---------- Cookie / policy button ---------- */
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    color: var(--site-muted);
+}
+
+    .footer a {
+        color: var(--site-accent);
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: var(--site-accent-hover);
+            text-decoration: underline;
+        }
+
+/* ---------- Navbar links ---------- */
+.navbar-nav .nav-link {
+    color: var(--site-text);
+}
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: var(--site-accent);
+    }
+
+.navbar-nav .nav-link {
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+    .navbar-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.15rem;
+        height: 2px;
+        background: var(--site-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease;
+    }
+
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+        transform: scaleX(1);
+    }
