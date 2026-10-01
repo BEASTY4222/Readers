@@ -2,8 +2,8 @@
 :root {
     --bg: #f7f5f2;
     --card: #ffffff;
-    --accent: #563d7c;
-    --accent-soft: #e9e4f0;
+    --accent: #7c4d2f; /* was #563d7c (purple) — now brown */
+    --accent-soft: #f0e6dd; /* was #e9e4f0 (pale purple) — now warm beige */
     --text: #2d2a26;
     --muted: #6b6560;
     --border: #e8e2db;
