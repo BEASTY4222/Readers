@@ -45,21 +45,10 @@
             <label for="searchedGenre">Genre</label>
             <select id="searchedGenre" name="searchedGenre">
                 <option value="">All genres</option>
-                <option value="Fantasy">Fantasy</option>
-                <option value="Science Fiction">Science Fiction</option>
-                <option value="Dystopian">Dystopian</option>
-                <option value="Classic">Classic</option>
-                <option value="Gothic">Gothic</option>
-                <option value="Romance">Romance</option>
-                <option value="Adventure">Adventure</option>
-                <option value="Historical Fiction">Historical Fiction</option>
-                <option value="Psychological Fiction">Psychological Fiction</option>
-                <option value="Philosophical Fiction">Philosophical Fiction</option>
-                <option value="Absurdist">Absurdist</option>
-                <option value="Political Satire">Political Satire</option>
-                <option value="Satire">Satire</option>
-                <option value="War Fiction">War Fiction</option>
-                <option value="Short Story">Short Story</option>
+                @foreach (var genre in Model)
+                {
+                    <option value="@genre">@genre</option>
+                }
             </select>
         </div>
 
