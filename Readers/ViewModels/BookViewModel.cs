@@ -1,4 +1,5 @@
-﻿using Readers.Data.DataModels;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Readers.Data.DataModels;
 
 namespace Readers.ViewModels
 {
@@ -10,6 +11,7 @@ namespace Readers.ViewModels
         public string? CoverImagePath { get; set; }
         public string Title { get; set; } = null!;
         public Author Author { get; set; } = null!;
+        public string Genre { get; set; } = null!;
         public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
