@@ -1,4 +1,4 @@
-﻿@model List<Readers.ViewModels.BookViewModel>
+﻿@model Readers.ViewModels.BookIndexViewModel
 @{
     ViewData["Title"] = "Books";
 }
@@ -17,9 +17,9 @@
             <p class="subtitle">Discover your next read from the collection</p>
         </header>
 
-        <partial name="_SearchPanel" />
+        <partial name="_SearchPanel" model="Model.Genres" />
 
-        @if (Model.Count == 0)
+        @if (Model.Books.Count == 0)
         {
             <div class="empty-state">
                 <p>No books have been added yet.</p>
@@ -28,7 +28,7 @@
         else
         {
             <div class="books-grid">
-                @foreach (var book in Model)
+                @foreach (var book in Model.Books)
                 {
                     <article class="book-card">
                         <div class="book-cover-wrap">
