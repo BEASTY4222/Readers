@@ -24,8 +24,8 @@ namespace Readers.Data.DataModels
         public string PublishingHouse { get; set; } = null!;
 
         [Required]
-        [StringLength(EntityDataLimits.GanreMaxLength, MinimumLength = EntityDataLimits.GanreMinLenght)]
-        public string Ganre { get; set; } = null!;
+        [StringLength(EntityDataLimits.GenreMaxLength, MinimumLength = EntityDataLimits.GenreMinLenght)]
+        public string Genre { get; set; } = null!;
 
         [Required]
         [Range(EntityDataLimits.YearPublishedMinLenght, EntityDataLimits.YearPublishedMaxLength)]

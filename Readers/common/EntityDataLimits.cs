@@ -11,8 +11,8 @@ namespace Common
         public const int TitleMinLenght = 1;
         public const int TitleMaxLength = 100;
 
-        public const int GanreMinLenght = 1;
-        public const int GanreMaxLength = 100;
+        public const int GenreMinLenght = 1;
+        public const int GenreMaxLength = 100;
 
         public const int AuthorMinLenght = 1;
         public const int AuthorMaxLength = 100;

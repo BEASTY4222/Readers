@@ -23,6 +23,7 @@ namespace Readers.Controllers
                 .Include(b => b.Author)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
+                .Include(b => b.Genre)
                 .OrderBy(b => b.Author.Name)
                 .ThenBy(b => b.YearPublished)
                 .Take(BookControllerLimits.MaxBooksToDisplay)
