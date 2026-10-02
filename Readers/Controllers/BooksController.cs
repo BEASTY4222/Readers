@@ -23,7 +23,6 @@ namespace Readers.Controllers
                 .Include(b => b.Author)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
-                .Include(b => b.Genre)
                 .OrderBy(b => b.Author.Name)
                 .ThenBy(b => b.YearPublished)
                 .Take(BookControllerLimits.MaxBooksToDisplay)
@@ -35,10 +34,15 @@ namespace Readers.Controllers
                 Title = b.Title,
                 Author = b.Author,
                 Likes = b.Likes,
+                Genre = b.Genre,
                 Comments = b.Comments
             }).ToList();
 
-            return View(bookViewModels);
+            return View(new BookIndexViewModel
+            {
+                Books = bookViewModels,
+                Genres = GetGenres()
+            });
         }
 
         [HttpGet]
@@ -62,7 +66,7 @@ namespace Readers.Controllers
 
             if(!string.IsNullOrEmpty(model.SearchedGenre))
             {
-                Books = Books.Where(b => b.Ganre == model.SearchedGenre);
+                Books = Books.Where(b => b.Genre == model.SearchedGenre);
             }
 
             Books = Books.Take(BookControllerLimits.MaxBooksToDisplay);
@@ -78,7 +82,20 @@ namespace Readers.Controllers
             .OrderBy(b => b.Author.Name)
             .ToList();
 
-            return View("Index",bookViewModels);
+            return View("Index", new BookIndexViewModel
+            {
+                Books = bookViewModels,
+                Genres = GetGenres()
+            });
+        }
+
+        private List<string> GetGenres()
+        {
+            return _context.Books
+                .Select(book => book.Genre)
+                .Distinct()
+                .OrderBy(genre => genre)
+                .ToList();
         }
     }
 }
