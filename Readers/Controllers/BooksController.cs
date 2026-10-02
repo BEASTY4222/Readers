@@ -41,7 +41,7 @@ namespace Readers.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(SearchFormViewModel model)
+        public IActionResult Search(SearchFormInputModel model)
         {
             IQueryable<Book> Books = _context.Books
                 .Include(b => b.Author)
