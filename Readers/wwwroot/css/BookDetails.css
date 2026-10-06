@@ -1,0 +1,465 @@
+﻿/* ============================================
+   Book Details Page
+   ============================================ */
+
+:root {
+    --bd-bg: #f7f5f2;
+    --bd-card: #ffffff;
+    --bd-accent: #7c4d2f;
+    --bd-accent-hover: #5e3a23;
+    --bd-accent-soft: #f0e6dd;
+    --bd-text: #2d2a26;
+    --bd-muted: #6b6560;
+    --bd-border: #e8e2db;
+    --bd-heart: #e05a5a;
+    --bd-radius: 14px;
+    --bd-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- Page wrapper ---------- */
+.book-details-page {
+    background: var(--bd-bg);
+    padding: 3rem 1.25rem 4rem;
+    min-height: 100vh;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--bd-text);
+    line-height: 1.7;
+}
+
+.book-details-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ---------- Layout: sidebar + main ---------- */
+.book-details-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* ---------- Sidebar ---------- */
+.book-details-sidebar {
+    position: sticky;
+    top: 2rem;
+}
+
+.book-cover-large {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: var(--bd-radius);
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+    background: var(--bd-accent-soft);
+}
+
+    .book-cover-large img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.book-cover-placeholder-large {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--bd-accent);
+}
+
+/* ---------- Like button ---------- */
+.book-actions {
+    margin-top: 1.25rem;
+}
+
+.btn-like {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+    background: var(--bd-card);
+    color: var(--bd-text);
+    border: 1px solid var(--bd-border);
+    border-radius: 999px;
+    padding: 0.7rem 1.1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+    .btn-like:hover {
+        background: var(--bd-accent-soft);
+        color: var(--bd-accent);
+        border-color: var(--bd-accent-soft);
+        transform: translateY(-1px);
+    }
+
+    .btn-like svg {
+        color: var(--bd-heart);
+    }
+
+.btn-like-count {
+    color: var(--bd-muted);
+    font-weight: 500;
+    margin-left: 0.15rem;
+}
+
+/* ---------- Main column ---------- */
+.book-details-main {
+    min-width: 0; /* prevents grid blowout from long content */
+}
+
+/* ---------- Header ---------- */
+.book-header {
+    margin-bottom: 1.5rem;
+}
+
+.book-title-large {
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: var(--bd-text);
+    margin: 0 0 0.4rem;
+    line-height: 1.2;
+}
+
+.book-author-link {
+    display: inline-block;
+    font-size: 1.05rem;
+    color: var(--bd-accent);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+    .book-author-link:hover {
+        color: var(--bd-accent-hover);
+        border-bottom-color: var(--bd-accent-hover);
+    }
+
+/* ---------- Genres ---------- */
+.book-genres {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.book-genres-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--bd-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.25rem;
+}
+
+.genre-pill {
+    display: inline-block;
+    background: var(--bd-accent-soft);
+    color: var(--bd-accent);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+    .genre-pill:hover {
+        background: var(--bd-accent);
+        color: #ffffff;
+    }
+
+/* ---------- Book info list ---------- */
+.book-info {
+    margin-bottom: 1rem;
+}
+
+.book-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+    .book-info-list li {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+.info-label {
+    color: var(--bd-muted);
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.info-value {
+    color: var(--bd-text);
+}
+
+/* ---------- Divider ---------- */
+.book-divider {
+    border: none;
+    border-top: 1px solid var(--bd-border);
+    margin: 2.25rem 0;
+}
+
+/* ---------- Author section ---------- */
+.book-author-section h2,
+.book-comments-section h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--bd-text);
+    margin: 0 0 1.25rem;
+}
+
+    .book-comments-section h2 .comment-count {
+        color: var(--bd-muted);
+        font-weight: 400;
+        font-size: 1.1rem;
+    }
+
+.author-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    background: var(--bd-card);
+    border: 1px solid var(--bd-border);
+    border-radius: var(--bd-radius);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--bd-shadow);
+}
+
+.author-avatar {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--bd-accent-soft);
+    color: var(--bd-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.author-info {
+    min-width: 0;
+}
+
+.author-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--bd-text);
+    margin: 0 0 0.15rem;
+}
+
+.author-country {
+    color: var(--bd-muted);
+    font-size: 0.9rem;
+    margin: 0 0 0.3rem;
+}
+
+.author-book-count {
+    color: var(--bd-accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* ---------- Comments ---------- */
+.comment-form {
+    margin-bottom: 2rem;
+    background: var(--bd-card);
+    border: 1px solid var(--bd-border);
+    border-radius: var(--bd-radius);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--bd-shadow);
+}
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: var(--bd-text);
+        background: var(--bd-bg);
+        border: 1px solid var(--bd-border);
+        border-radius: 10px;
+        resize: vertical;
+        min-height: 90px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .comment-form textarea:focus {
+            border-color: var(--bd-accent);
+            box-shadow: 0 0 0 3px rgba(124, 77, 47, 0.12);
+        }
+
+.comment-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+}
+
+.btn-post-comment {
+    background: var(--bd-accent);
+    color: #ffffff;
+    border: 1px solid var(--bd-accent);
+    border-radius: 999px;
+    padding: 0.55rem 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+    .btn-post-comment:hover {
+        background: var(--bd-accent-hover);
+        border-color: var(--bd-accent-hover);
+        transform: translateY(-1px);
+    }
+
+.comment-login-hint {
+    color: var(--bd-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+    .comment-login-hint a {
+        color: var(--bd-accent);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px dashed transparent;
+    }
+
+        .comment-login-hint a:hover {
+            border-bottom-color: var(--bd-accent);
+        }
+
+.comment-empty {
+    color: var(--bd-muted);
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.comment-item {
+    display: flex;
+    gap: 0.9rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--bd-border);
+}
+
+    .comment-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+.comment-avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bd-accent-soft);
+    color: var(--bd-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.comment-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: var(--bd-text);
+    font-size: 0.95rem;
+}
+
+.comment-date {
+    color: var(--bd-muted);
+    font-size: 0.8rem;
+}
+
+.comment-text {
+    color: var(--bd-text);
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap; /* preserves line breaks in user comments */
+    word-wrap: break-word;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+    .book-details-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .book-details-sidebar {
+        position: static;
+        max-width: 260px;
+        margin: 0 auto;
+    }
+
+    .book-details-page {
+        padding: 2rem 1rem 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-info-list li {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .info-label {
+        min-width: 0;
+    }
+
+    .author-card {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+}
