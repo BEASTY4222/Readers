@@ -97,5 +97,24 @@ namespace Readers.Controllers
                 .OrderBy(genre => genre)
                 .ToList();
         }
+
+        public IActionResult Details(int id)
+        {
+            var book = _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Likes)
+                .Include(b => b.Comments)
+                    .ThenInclude(c => c.User)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (book == null)
+                return NotFound();
+
+            // Count of the author's other books (for "About the author")
+            ViewBag.AuthorBookCount =  _context.Books
+                .Count(b => b.AuthorId == book.AuthorId);
+
+            return View(book);
+        }
     }
 }
