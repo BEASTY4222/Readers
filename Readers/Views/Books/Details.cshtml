@@ -1,0 +1,166 @@
+﻿@model Readers.Data.DataModels.Book
+@{
+    ViewData["Title"] = Model.Title;
+    var authorBookCount = (int)(ViewBag.AuthorBookCount ?? 0);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/BookDetails.css" asp-append-version="true" />
+}
+
+<div class="book-details-page">
+    <div class="book-details-container">
+
+        <div class="book-details-grid">
+
+            @* ---------- LEFT: cover + actions ---------- *@
+            <aside class="book-details-sidebar">
+                <div class="book-cover-large">
+                    @if (!string.IsNullOrEmpty(Model.CoverImagePath))
+                    {
+                        <img src="@Model.CoverImagePath" alt="@Model.Title cover" />
+                    }
+                    else
+                    {
+                        <div class="book-cover-placeholder-large">
+                            <span>@Model.Title</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="book-actions">
+                    <button type="button" class="btn-like" aria-label="Like this book">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                  fill="currentColor" />
+                        </svg>
+                        <span>Like</span>
+                        <span class="btn-like-count">@Model.Likes.Count</span>
+                    </button>
+                </div>
+            </aside>
+
+            @* ---------- RIGHT: main content ---------- *@
+            <main class="book-details-main">
+
+                <header class="book-header">
+                    <h1 class="book-title-large">@Model.Title</h1>
+                    <a href="#" class="book-author-link">@Model.Author.Name</a>
+                </header>
+
+                @* ---------- Genre pills ---------- *@
+                <section class="book-genres">
+                    <span class="book-genres-label">Genres</span>
+                    <a asp-controller="Books" asp-action="Index" asp-route-genre="@Model.Genre" class="genre-pill">
+                        @Model.Genre
+                    </a>
+                </section>
+
+                @* ---------- Book details list ---------- *@
+                <section class="book-info">
+                    <ul class="book-info-list">
+                        <li>
+                            <span class="info-label">Pages</span>
+                            <span class="info-value">@Model.Pages</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Publisher</span>
+                            <span class="info-value">@Model.PublishingHouse</span>
+                        </li>
+                        <li>
+                            <span class="info-label">First published</span>
+                            <span class="info-value">@Model.YearPublished</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <hr class="book-divider" />
+
+                @* ---------- About the author ---------- *@
+                <section class="book-author-section">
+                    <h2>About the author</h2>
+                    <div class="author-card">
+                        <div class="author-avatar" aria-hidden="true">
+                            @{
+                                var initials = string.Concat(
+                                    Model.Author.Name
+                                        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                        .Take(2)
+                                        .Select(p => p[0])
+                                );
+                            }
+                            <span>@initials</span>
+                        </div>
+                        <div class="author-info">
+                            <h3 class="author-name">@Model.Author.Name</h3>
+                            @if (!string.IsNullOrEmpty(Model.Author.Country))
+                            {
+                                <p class="author-country">@Model.Author.Country</p>
+                            }
+                            <p class="author-book-count">
+                                @authorBookCount book@(authorBookCount == 1 ? "" : "s") on Readers
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="book-divider" />
+
+                @* ---------- Comments ---------- *@
+                <section class="book-comments-section">
+                    <h2>Comments <span class="comment-count">(@Model.Comments.Count)</span></h2>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form class="comment-form" method="post" asp-controller="Comments" asp-action="Create">
+                            <input type="hidden" name="BookId" value="@Model.Id" />
+                            <textarea name="Text"
+                                      rows="3"
+                                      placeholder="Share your thoughts about this book..."
+                                      required></textarea>
+                            <div class="comment-form-actions">
+                                <button type="submit" class="btn-post-comment">Post comment</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="comment-login-hint">
+                            <a asp-area="Identity" asp-page="/Account/Login">Sign in</a> to leave a comment.
+                        </p>
+                    }
+
+                    @if (Model.Comments.Count == 0)
+                    {
+                        <p class="comment-empty">No comments yet. Be the first to share your thoughts.</p>
+                    }
+                    else
+                    {
+                        <ul class="comment-list">
+                            @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                            {
+                                <li class="comment-item">
+                                    <div class="comment-avatar" aria-hidden="true">
+                                        @{
+                                            var commenter = comment.User?.UserName ?? "?";
+                                            var commenterInitial = commenter.Length > 0 ? commenter[0].ToString().ToUpper() : "?";
+                                        }
+                                        <span>@commenterInitial</span>
+                                    </div>
+                                    <div class="comment-body">
+                                        <div class="comment-meta">
+                                            <span class="comment-author">@commenter</span>
+                                            <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy")</span>
+                                        </div>
+                                        <p class="comment-text">@comment.Content</p>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </section>
+
+            </main>
+        </div>
+    </div>
+</div>
