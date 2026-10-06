@@ -19,7 +19,6 @@ namespace Readers.Data.DataModels
         public int BookId { get; set; }
         public Book Book { get; set; } = null!;
 
-        [ForeignKey(nameof(UserId))]
         public string UserId { get; set; } = null!;
         public ApplicationUser User { get; set; } = null!;
     }
