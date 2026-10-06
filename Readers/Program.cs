@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using Readers.Data;
 using System.Globalization;
 using Readers.Data.Seed;
+using Readers.Data.DataModels;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +68,7 @@ static void ApplyDBContext(IHostApplicationBuilder builder)
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString));
 
-    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
