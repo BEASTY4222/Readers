@@ -36,5 +36,12 @@ namespace Common
 
 
         /*Author End*/
+
+        /*Comment Begin*/
+        public const int CommentContentMinLenght = 1;
+        public const int CommentContentMaxLength = 20000;
+
+        public const string datetimeFormat = "dd/MM/yyyy";
+        public const string collumnType = "smallDateTime";
     }
 }
