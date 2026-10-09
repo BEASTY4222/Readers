@@ -1,7 +1,5 @@
-﻿@model Readers.Models.ViewModels.LanguageSwitcherViewModel
+﻿@model Readers.Web.Models.ViewModels.LanguageSwitcherViewModel
 @using Microsoft.Extensions.Localization
-@using Microsoft.AspNetCore.Mvc.Localization
-@using Readers.Resources
 @inject IStringLocalizer<SharedResources> Localizer
 
 <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="lang-form">

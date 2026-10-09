@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Readers.Data;
+using Readers.Web.Data;
 
 #nullable disable
 
 namespace Readers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260928163044_virtualFieldsAdded")]
-    partial class virtualFieldsAdded
+    [Migration("20261006164727_commentTableUpdate")]
+    partial class commentTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,7 +261,7 @@ namespace Readers.Data.Migrations
                     b.Property<string>("CoverImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ganre")
+                    b.Property<string>("Genre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -299,6 +299,14 @@ namespace Readers.Data.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(20000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("smallDateTime");
 
                     b.Property<string>("UserId")
                         .IsRequired()

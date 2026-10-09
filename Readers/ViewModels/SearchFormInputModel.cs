@@ -1,4 +1,4 @@
-﻿namespace Readers.ViewModels
+﻿namespace Readers.Web.ViewModels
 {
     public class SearchFormInputModel
     {

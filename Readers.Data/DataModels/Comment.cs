@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common;
+using Readers.Web.common;
 
-namespace Readers.Data.DataModels
+namespace Readers.Web.Data.DataModels
 {
     public class Comment
     {

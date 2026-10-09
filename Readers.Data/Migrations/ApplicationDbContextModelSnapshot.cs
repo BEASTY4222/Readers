@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Readers.Data;
+using Readers.Web.Data;
 
 #nullable disable
 
 namespace Readers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260918151407_MyInitialMigration")]
-    partial class MyInitialMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,6 +224,26 @@ namespace Readers.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Readers.Data.DataModels.Author", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("Readers.Data.DataModels.Book", b =>
                 {
                     b.Property<int>("Id")
@@ -235,19 +252,19 @@ namespace Readers.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CoverImagePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ganre")
+                    b.Property<string>("Genre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Pages")
+                        .HasColumnType("int");
 
                     b.Property<string>("PublishingHouse")
                         .IsRequired()
@@ -262,10 +279,9 @@ namespace Readers.Data.Migrations
                     b.Property<int>("YearPublished")
                         .HasColumnType("int");
 
-                    b.Property<int>("pages")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
                 });
@@ -280,6 +296,14 @@ namespace Readers.Data.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(20000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("smallDateTime");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -370,6 +394,17 @@ namespace Readers.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Readers.Data.DataModels.Book", b =>
+                {
+                    b.HasOne("Readers.Data.DataModels.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("Readers.Data.DataModels.Comment", b =>
                 {
                     b.HasOne("Readers.Data.DataModels.Book", "Book")
@@ -413,6 +448,11 @@ namespace Readers.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Readers.Data.DataModels.Author", b =>
+                {
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Readers.Data.DataModels.Book", b =>

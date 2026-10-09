@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Readers.Data;
+using Readers.Web.Data;
 
 #nullable disable
 
 namespace Readers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260926111652_MigrationBeforeFirstSeed")]
-    partial class MigrationBeforeFirstSeed
+    [Migration("20260925072319_AddAuthorTable")]
+    partial class AddAuthorTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,11 +235,11 @@ namespace Readers.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("country")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -259,15 +259,13 @@ namespace Readers.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CoverImagePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ganre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Pages")
-                        .HasColumnType("int");
 
                     b.Property<string>("PublishingHouse")
                         .IsRequired()
@@ -280,6 +278,9 @@ namespace Readers.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("YearPublished")
+                        .HasColumnType("int");
+
+                    b.Property<int>("pages")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

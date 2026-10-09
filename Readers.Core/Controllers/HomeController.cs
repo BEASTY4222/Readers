@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Readers.Models;
+using Readers.Web.ViewModels;
 using System.Diagnostics;
 
-namespace Readers.Controllers
+namespace Readers.Web.Controllers
 {
     public class HomeController : Controller
     {

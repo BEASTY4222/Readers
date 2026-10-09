@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Readers.Data.DataModels;
+using Readers.Web.Data;
+using Readers.Web.Data.DataModels;
 
-namespace Readers.Data.Seed
+namespace Readers.Web.Data.Seed
 {
     public static class BookSeeder
     {

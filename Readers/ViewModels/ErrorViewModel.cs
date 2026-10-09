@@ -1,4 +1,4 @@
-namespace Readers.Models
+namespace Readers.Web.ViewModels
 {
     public class ErrorViewModel
     {

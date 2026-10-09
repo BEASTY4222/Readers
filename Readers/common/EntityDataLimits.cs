@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Common
+namespace Readers.Web.common
 {
     // This class contains the limits for the data of the entities in the application.
     // It is used to validate the data before it is saved to the database.

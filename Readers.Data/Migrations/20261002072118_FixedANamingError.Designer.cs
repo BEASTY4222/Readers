@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Readers.Data;
+using Readers.Web.Data;
 
 #nullable disable
 
 namespace Readers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261006164727_commentTableUpdate")]
-    partial class commentTableUpdate
+    [Migration("20261002072118_FixedANamingError")]
+    partial class FixedANamingError
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -299,14 +299,6 @@ namespace Readers.Data.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(20000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("smallDateTime");
 
                     b.Property<string>("UserId")
                         .IsRequired()

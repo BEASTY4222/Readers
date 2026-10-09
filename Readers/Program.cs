@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Readers.Data;
-using System.Globalization;
-using Readers.Data.Seed;
-using Readers.Data.DataModels;
+using Readers.Web.Data;
+using Readers.Web.Data.DataModels;
+using Readers.Web.Data.Seed;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

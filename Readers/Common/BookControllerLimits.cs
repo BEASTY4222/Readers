@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Readers.Web.common
 {
     public class BookControllerLimits
     {
