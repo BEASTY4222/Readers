@@ -30,6 +30,7 @@ namespace Readers.Controllers
 
             List<BookViewModel> bookViewModels = books.Select(b => new BookViewModel
             {
+                Id = b.Id,
                 CoverImagePath = b.CoverImagePath,
                 Title = b.Title,
                 Author = b.Author,
@@ -73,6 +74,7 @@ namespace Readers.Controllers
 
             List<BookViewModel> bookViewModels = Books.Select(b => new BookViewModel
             {
+                Id = b.Id,
                 CoverImagePath = b.CoverImagePath,
                 Title = b.Title,
                 Author = b.Author,

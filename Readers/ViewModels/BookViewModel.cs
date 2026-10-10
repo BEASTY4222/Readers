@@ -8,6 +8,7 @@ namespace Readers.ViewModels
         // No need for validation because the data is from a trusted souces to an untrested source
         // (the view), and the data is already validated in the Book model.
 
+        public int Id { get; set; }
         public string? CoverImagePath { get; set; }
         public string Title { get; set; } = null!;
         public Author Author { get; set; } = null!;
