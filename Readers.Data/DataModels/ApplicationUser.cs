@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Readers.Web.Data.DataModels
+namespace Readers.Data.DataModels
 {
     public class ApplicationUser : IdentityUser
     {

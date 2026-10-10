@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Readers.Common/Readers.Common.csproj" Id="6b055318-f7c6-46cc-acb7-1e8a6c2552e8" />
   <Project Path="Readers.Core/Readers.Core.csproj" Id="e859b36c-f46d-456f-b3b0-897c33cde7bd" />
   <Project Path="Readers.Data/Readers.Data.csproj" Id="b5141937-18d0-46e4-9d95-065a81d31ae2" />
   <Project Path="Readers/Readers.Web.csproj" />

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Readers.Web.common;
+using Readers.Common;
 
-namespace Readers.Web.Data.DataModels
+namespace Readers.Data.DataModels
 {
     public class Author
     {

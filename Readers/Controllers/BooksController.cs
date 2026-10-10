@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Readers.Web.Data;
+using Readers.Data;
 using Readers.Web.ViewModels;
-using Readers.Web.common;
-using Readers.Web.Data.DataModels;
+using Readers.Data.DataModels;
+using Readers.Common;
 
 namespace Readers.Web.Controllers
 {

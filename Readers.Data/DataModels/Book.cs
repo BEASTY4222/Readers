@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Readers.Web.common;
+using Readers.Common;
 
-namespace Readers.Web.Data.DataModels
+namespace Readers.Data.DataModels
 {
     public class Book
     {

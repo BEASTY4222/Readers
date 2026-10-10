@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using Readers.Web.Data.DataModels;
+using Readers.Data.DataModels;
 
 namespace Readers.Web.ViewModels
 {

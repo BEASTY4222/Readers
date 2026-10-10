@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Readers.Web.Data.DataModels
+namespace Readers.Data.DataModels
 {
     public class Like
     {
