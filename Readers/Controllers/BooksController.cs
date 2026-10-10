@@ -4,31 +4,21 @@ using Readers.Data;
 using Readers.Web.ViewModels;
 using Readers.Data.DataModels;
 using Readers.Common;
+using Readers.Core.Contracts;
+using System.Linq; // for AsAsyncEnumerable() if available via package
 
 namespace Readers.Web.Controllers
 {
-    public class BooksController : Controller
+    public class BooksController(IBookService bookService) : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public BooksController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         [Route("/Books")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // Retriving all the books because they arent many as if now 26.09.2026
-            List<Book> books = _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Likes)
-                .Include(b => b.Comments)
-                .OrderBy(b => b.Author.Name)
-                .ThenBy(b => b.YearPublished)
-                .Take(BookControllerLimits.MaxBooksToDisplay)
-                .ToList();
+            List<Book> books = (await bookService.GetAllBooks()).ToList();
 
-            List<BookViewModel> bookViewModels = books.Select(b => new BookViewModel
+            List<BookViewModel> bookViewModels = books
+            .Select(b => new BookViewModel
             {
                 Id = b.Id,
                 CoverImagePath = b.CoverImagePath,
@@ -37,84 +27,51 @@ namespace Readers.Web.Controllers
                 Likes = b.Likes,
                 Genre = b.Genre,
                 Comments = b.Comments
-            }).ToList();
+            })
+            .ToList();
 
             return View(new BookIndexViewModel
             {
                 Books = bookViewModels,
-                Genres = GetGenres()
+                Genres = (await bookService.GetGenres()).ToList()
             });
         }
 
         [HttpGet]
-        public IActionResult Search(SearchFormInputModel model)
+        public async Task<IActionResult> Search(SearchFormInputModel model)
         {
-            IQueryable<Book> Books = _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Likes)
-                .Include(b => b.Comments)
-                .AsQueryable();
+            var books = await bookService.SearchAsync(
+                model.SearchedTitle,
+                model.SearchedAuthor,
+                model.SearchedGenre);
 
-            if (!string.IsNullOrEmpty(model.SearchedTitle))
+            var viewModel = new BookIndexViewModel
             {
-                Books = Books.Where(b => b.Title.Replace(" ", String.Empty).ToLower().Contains(model.SearchedTitle.Replace(" ", String.Empty).ToLower()));
-            }
+                Books = books.Select(b => new BookViewModel {
+                    Id = b.Id,
+                    CoverImagePath = b.CoverImagePath,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Likes = b.Likes,
+                    Genre = b.Genre,
+                    Comments = b.Comments
+                }).ToList(),
 
-            if (!string.IsNullOrEmpty(model.SearchedAuthor))
-            {
-                Books = Books.Where(b => b.Author.Name.Replace(" ", String.Empty).ToLower().Contains(model.SearchedAuthor.Replace(" ", String.Empty).ToLower()));
-            }
+                Genres = (await bookService.GetGenres()).ToList()
+            };
 
-            if(!string.IsNullOrEmpty(model.SearchedGenre))
-            {
-                Books = Books.Where(b => b.Genre == model.SearchedGenre);
-            }
-
-            Books = Books.Take(BookControllerLimits.MaxBooksToDisplay);
-
-            List<BookViewModel> bookViewModels = Books.Select(b => new BookViewModel
-            {
-                Id = b.Id,
-                CoverImagePath = b.CoverImagePath,
-                Title = b.Title,
-                Author = b.Author,
-                Likes = b.Likes,
-                Comments = b.Comments
-            })
-            .OrderBy(b => b.Author.Name)
-            .ToList();
-
-            return View("Index", new BookIndexViewModel
-            {
-                Books = bookViewModels,
-                Genres = GetGenres()
-            });
+            return View("Index", viewModel);
         }
 
-        private List<string> GetGenres()
+        public async Task<IActionResult> Details(int id)
         {
-            return _context.Books
-                .Select(book => book.Genre)
-                .Distinct()
-                .OrderBy(genre => genre)
-                .ToList();
-        }
-
-        public IActionResult Details(int id)
-        {
-            var book = _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Likes)
-                .Include(b => b.Comments)
-                    .ThenInclude(c => c.User)
-                .FirstOrDefault(b => b.Id == id);
+            var book = await bookService.GetByIdAsync(id);
 
             if (book == null)
                 return NotFound();
 
             // Count of the author's other books (for "About the author")
-            ViewBag.AuthorBookCount =  _context.Books
-                .Count(b => b.AuthorId == book.AuthorId);
+            ViewBag.AuthorBookCount = await bookService.GetAuthorBookCount(book.AuthorId);
 
             return View(book);
         }
