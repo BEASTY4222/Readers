@@ -19,7 +19,7 @@ ApplyLocalization(builder, localizationOptions);
 var app = builder.Build();
 
 // Aplly database seeding
-SeedDB(app.Services);
+//SeedDB(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
