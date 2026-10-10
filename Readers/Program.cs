@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Readers.Core.Contracts;
+using Readers.Core.Services;
 using Readers.Data;
 using Readers.Data.DataModels;
 using Readers.Data.Seed;
@@ -10,6 +12,8 @@ using Readers.Data.Seed;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IBookService, BookService>();
+
 ApplyDBContext(builder);
 
 RequestLocalizationOptions localizationOptions = new RequestLocalizationOptions();
