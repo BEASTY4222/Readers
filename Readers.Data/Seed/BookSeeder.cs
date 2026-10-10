@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Readers.Data;
 using Readers.Data.DataModels;
 
 namespace Readers.Data.Seed

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Common;
 using Readers.Data;
+using Readers.Web.ViewModels;
 using Readers.Data.DataModels;
-using Readers.ViewModels;
+using Readers.Common;
 
-namespace Readers.Controllers
+namespace Readers.Web.Controllers
 {
     public class BooksController : Controller
     {

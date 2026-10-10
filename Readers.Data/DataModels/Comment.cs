@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common;
+using Readers.Common;
 
 namespace Readers.Data.DataModels
 {

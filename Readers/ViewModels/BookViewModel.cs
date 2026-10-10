@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Readers.Data.DataModels;
 
-namespace Readers.ViewModels
+namespace Readers.Web.ViewModels
 {
     public class BookViewModel
     {

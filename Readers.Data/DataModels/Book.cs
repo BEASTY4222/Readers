@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Common;
+using Readers.Common;
 
 namespace Readers.Data.DataModels
 {
