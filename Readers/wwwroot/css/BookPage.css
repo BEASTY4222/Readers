@@ -197,3 +197,22 @@
         font-size: 0.75rem;
     }
 }
+
+.book-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: var(--books-radius); /* matches the card so focus ring looks right */
+    transition: transform 0.25s ease;
+}
+
+    .book-card-link:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* Focus ring for keyboard accessibility */
+    .book-card-link:focus-visible {
+        outline: 3px solid var(--books-accent);
+        outline-offset: 4px;
+    }
