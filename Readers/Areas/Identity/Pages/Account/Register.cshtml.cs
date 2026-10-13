@@ -71,6 +71,13 @@ public class RegisterModel : PageModel
     public class InputModel
     {
         /// <summary>
+        ///     A user-defined username for the account. This is not the email address, but a separate identifier that the user can choose.
+        /// </summary>
+        [Required]
+        [Display(Name = "UserName")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        public string UserTypedName { get; set; } = default!;
+        /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
