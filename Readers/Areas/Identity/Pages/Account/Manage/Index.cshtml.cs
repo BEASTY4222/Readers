@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Readers.Web.Data;
+using Readers.Data.DataModels;
 
 namespace Readers.Web.Areas.Identity.Pages.Account.Manage;
 

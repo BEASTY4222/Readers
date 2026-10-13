@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Readers.Web.Data;
+using Readers.Data.DataModels;
 
 namespace Readers.Web.Areas.Identity.Pages.Account;
 

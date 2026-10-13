@@ -8,7 +8,6 @@ using Readers.Core.Services;
 using Readers.Data;
 using Readers.Data.DataModels;
 using Readers.Data.Seed;
-using Readers.Web.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
