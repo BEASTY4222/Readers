@@ -43,5 +43,12 @@ namespace Readers.Common
 
         public const string datetimeFormat = "dd/MM/yyyy";
         public const string collumnType = "smallDateTime";
+
+        /*Comment End*/
+
+        /*Application User Begin*/
+        public const int UserTypedNameMinLength = 2;
+        public const int UserTypedNameMaxLength = 50;
+        /*Application User End*/
     }
 }
