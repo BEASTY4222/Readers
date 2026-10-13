@@ -112,8 +112,8 @@
 
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
-                        <form class="comment-form" method="post" asp-controller="Comments" asp-action="Create">
-                            <input type="hidden" name="BookId" value="@Model.Id" />
+                        <form class="comment-form" method="post" asp-controller="Comment" asp-action="Create">
+                            <input type="hidden" name="id" value="@Model.Id" />
                             <textarea name="Text"
                                       rows="3"
                                       placeholder="Share your thoughts about this book..."
@@ -142,8 +142,8 @@
                                 <li class="comment-item">
                                     <div class="comment-avatar" aria-hidden="true">
                                         @{
-                                            var commenter = comment.User?.UserName ?? "?";
-                                            var commenterInitial = commenter.Length > 0 ? commenter[0].ToString().ToUpper() : "?";
+                                            var commenter = comment.User?.UserTypedName;
+                                            var commenterInitial = commenter?.Length > 0 ? commenter[0].ToString().ToUpper() : "?";
                                         }
                                         <span>@commenterInitial</span>
                                     </div>
