@@ -110,72 +110,108 @@
 
                 @* ---------- Comments ---------- *@
                 <section class="book-comments-section">
-                    <ul class="comment-list">
-                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
-                        {
-                            var isOwner = currentUserId != null && comment.UserId == currentUserId;
-                            var commenter = comment.User?.UserTypedName ?? "Unknown";
-                            var commenterInitial = commenter.Length > 0 ? commenter[0].ToString().ToUpper() : "?";
+                    <h2>Comments <span class="comment-count">(@Model.Comments.Count)</span></h2>
 
-                            <li class="comment-item" data-comment-id="@comment.Id">
-                                <div class="comment-avatar" aria-hidden="true">
-                                    <span>@commenterInitial</span>
-                                </div>
+                    @* ----- Comment form (signed-in users only) ----- *@
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form class="comment-form" method="post" asp-controller="Comment" asp-action="Create">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <textarea name="text"
+                                      rows="3"
+                                      placeholder="Share your thoughts about this book..."
+                                      required></textarea>
+                            <div class="comment-form-actions">
+                                <button type="submit" class="btn-post-comment">Post comment</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="comment-login-hint">
+                            <a asp-area="Identity" asp-page="/Account/Login"
+                               asp-route-returnUrl="@Url.Action("Details", "Books", new { id = Model.Id })">
+                                Sign in
+                            </a>
+                            to leave a comment.
+                        </p>
+                    }
 
-                                <div class="comment-body">
-                                    <div class="comment-meta">
-                                        <span class="comment-author">@commenter</span>
-                                        <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy")</span>
+                    @* ----- Comments list or empty state ----- *@
+                    @if (Model.Comments.Count == 0)
+                    {
+                        <p class="comment-empty">No comments yet. Be the first to share your thoughts.</p>
+                    }
+                    else
+                    {
+                        <ul class="comment-list">
+                            @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                            {
+                                var isOwner = currentUserId != null && comment.UserId == currentUserId;
+                                var commenter = comment.User?.UserTypedName ?? "Unknown";
+                                var commenterInitial = commenter.Length > 0 ? commenter[0].ToString().ToUpper() : "?";
 
-                                        @if (isOwner)
-                                        {
-                                            <div class="comment-actions">
-                                                <button type="button" class="comment-action-btn js-edit-toggle" title="Edit">
-                                                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                                              fill="currentColor" />
-                                                    </svg>
-                                                </button>
+                                <li class="comment-item" data-comment-id="@comment.Id">
+                                    <div class="comment-avatar" aria-hidden="true">
+                                        <span>@commenterInitial</span>
+                                    </div>
 
-                                                <form method="post" asp-controller="Comment" asp-action="Delete" class="inline-form">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="commentId" value="@comment.Id" />
-                                                    <input type="hidden" name="bookId" value="@Model.Id" />
-                                                    <button type="submit" class="comment-action-btn"
-                                                            title="Delete"
-                                                            onclick="return confirm('Delete this comment?');">
+                                    <div class="comment-body">
+                                        <div class="comment-meta">
+                                            <span class="comment-author">@commenter</span>
+                                            <span class="comment-date">@comment.CreatedAt.ToString("MMM d, yyyy")</span>
+
+                                            @if (isOwner)
+                                            {
+                                                <div class="comment-actions">
+                                                    <button type="button" class="comment-action-btn js-edit-toggle" title="Edit">
                                                         <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
                                                                   fill="currentColor" />
                                                         </svg>
                                                     </button>
-                                                </form>
-                                            </div>
+
+                                                    <form method="post" asp-controller="Comment" asp-action="Delete" class="inline-form">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="commentId" value="@comment.Id" />
+                                                        <input type="hidden" name="bookId" value="@Model.Id" />
+                                                        <button type="submit" class="comment-action-btn"
+                                                                title="Delete"
+                                                                onclick="return confirm('Delete this comment?');">
+                                                            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                                                                      fill="currentColor" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <p class="comment-text js-comment-view">@comment.Content</p>
+
+                                        @if (isOwner)
+                                        {
+                                            <form class="comment-edit-form js-comment-edit-form"
+                                                  method="post"
+                                                  asp-controller="Comment"
+                                                  asp-action="Edit">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                                <input type="hidden" name="bookId" value="@Model.Id" />
+                                                <textarea name="content" rows="3" required>@comment.Content</textarea>
+                                                <div class="comment-edit-actions">
+                                                    <button type="button" class="btn-cancel-edit js-edit-cancel">Cancel</button>
+                                                    <button type="submit" class="btn-save-edit">Save</button>
+                                                </div>
+                                            </form>
                                         }
                                     </div>
-
-                                    <p class="comment-text js-comment-view">@comment.Content</p>
-
-                                    @if (isOwner)
-                                    {
-                                        <form class="comment-edit-form js-comment-edit-form"
-                                              method="post"
-                                              asp-controller="Comment"
-                                              asp-action="Edit">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="commentId" value="@comment.Id" />
-                                            <input type="hidden" name="bookId" value="@Model.Id" />
-                                            <textarea name="content" rows="3" required>@comment.Content</textarea>
-                                            <div class="comment-edit-actions">
-                                                <button type="button" class="btn-cancel-edit js-edit-cancel">Cancel</button>
-                                                <button type="submit" class="btn-save-edit">Save</button>
-                                            </div>
-                                        </form>
-                                    }
-                                </div>
-                            </li>
-                        }
-                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    }
                 </section>
 
             </main>
