@@ -587,3 +587,30 @@
         background: var(--bd-accent-hover);
         border-color: var(--bd-accent-hover);
     }
+
+
+.like-form {
+    display: block;
+    margin: 0;
+}
+
+/* Hollow heart for guests */
+.btn-like svg[stroke] {
+    color: var(--bd-muted);
+}
+
+/* Liked state */
+.btn-like.liked {
+    background: var(--bd-accent-soft);
+    border-color: var(--bd-accent);
+    color: var(--bd-accent);
+}
+
+    .btn-like.liked svg {
+        color: var(--bd-heart);
+    }
+
+    .btn-like.liked .btn-like-count {
+        color: var(--bd-accent);
+        font-weight: 600;
+    }
