@@ -15,5 +15,7 @@ namespace Readers.Core.Contracts
         Task<int> GetAuthorBookCount(int id);
         Task<Book?> GetByIdAsync(int id);
         Task<IEnumerable<Book>> SearchAsync(string? title, string? author, string? genre);
+        Task<bool> ToggleLikeAsync(int bookId, string userId);
+        Task<bool> UserHasLikedAsync(int bookId, string userId);
     }
 }

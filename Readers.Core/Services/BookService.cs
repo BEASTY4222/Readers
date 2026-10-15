@@ -77,5 +77,35 @@ namespace Readers.Core.Services
                 .Take(BookControllerLimits.MaxBooksToDisplay)
                 .ToListAsync();
         }
+
+        public async Task<bool> ToggleLikeAsync(int bookId, string userId)
+        {
+            // Look for an existing like by this user on this book
+            var existingLike = await context.Likes
+                .FirstOrDefaultAsync(l => l.BookId == bookId && l.UserId == userId);
+
+            if (existingLike != null)
+            {
+                // Already liked → unlike
+                context.Likes.Remove(existingLike);
+                await context.SaveChangesAsync();
+                return false;   // new state: not liked
+            }
+
+            // Not liked yet → like it
+            context.Likes.Add(new Like
+            {
+                BookId = bookId,
+                UserId = userId
+            });
+            await context.SaveChangesAsync();
+            return true;   // new state: liked
+        }
+
+        public async Task<bool> UserHasLikedAsync(int bookId, string userId)
+        {
+            return await context.Likes
+                .AnyAsync(l => l.BookId == bookId && l.UserId == userId);
+        }
     }
 }

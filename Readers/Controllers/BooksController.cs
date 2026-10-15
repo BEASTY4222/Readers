@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Readers.Web.Controllers
 {
-    public class BooksController(IBookService bookService) : Controller
+    public class BooksController(IBookService bookService, UserManager<ApplicationUser> userManager) : Controller
     {
         [Route("/Books")]
         public async Task<IActionResult> Index()
@@ -76,7 +76,31 @@ namespace Readers.Web.Controllers
             // Count of the author's other books (for "About the author")
             ViewBag.AuthorBookCount = await bookService.GetAuthorBookCount(book.AuthorId);
 
+            // NEW: tell the view whether the current user has liked this book
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userId = userManager.GetUserId(User);
+                if (userId != null)
+                {
+                    ViewBag.UserHasLiked = await bookService.UserHasLikedAsync(id, userId);
+                }
+            }
+
             return View(book);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleLike(int id)
+        {
+            var userId = userManager.GetUserId(User);
+            if (userId == null)
+                return Challenge();
+
+            await bookService.ToggleLikeAsync(id, userId);
+
+            return RedirectToAction("Details", new { id });
         }
     }
 }
