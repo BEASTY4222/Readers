@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = Model.Title;
     var authorBookCount = (int)(ViewBag.AuthorBookCount ?? 0);
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
 }
 
 @section Styles {
