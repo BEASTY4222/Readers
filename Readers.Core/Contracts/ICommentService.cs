@@ -9,5 +9,6 @@ namespace Readers.Core.Contracts
     {
         Task CreateAsync(int bookId, string text, string userId);
         Task<bool> DeleteAsync(int commentId, string userId);
+        Task<bool> EditAsync(int commentId, string userId, string newContent);
     }
 }

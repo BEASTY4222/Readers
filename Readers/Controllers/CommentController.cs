@@ -59,5 +59,33 @@ namespace Readers.Web.Controllers
 
             return RedirectToAction("Details", "Books", new { id = bookId });
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/Comment/Edit")]
+        public async Task<IActionResult> Edit(int commentId, int bookId, string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                ModelState.AddModelError("content", "Comment text cannot be empty.");
+                return RedirectToAction("Details", "Books", new { id = bookId });
+            }
+
+            if (content.Length < EntityDataLimits.CommentContentMinLenght ||
+                content.Length > EntityDataLimits.CommentContentMaxLength)
+            {
+                ModelState.AddModelError("content", "Comment length is invalid.");
+                return RedirectToAction("Details", "Books", new { id = bookId });
+            }
+
+            var userId = userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            var success = await commentService.EditAsync(commentId, userId, content);
+            if (!success) return Forbid();
+
+            return RedirectToAction("Details", "Books", new { id = bookId });
+        }
     }
 }

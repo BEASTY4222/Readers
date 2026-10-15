@@ -34,5 +34,16 @@ namespace Readers.Core.Services
             await context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> EditAsync(int commentId, string userId, string newContent)
+        {
+            var comment = await context.Comments.FindAsync(commentId);
+            if (comment == null || comment.UserId != userId)
+                return false;
+
+            comment.Content = newContent.Trim();
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
