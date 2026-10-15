@@ -1,4 +1,6 @@
-﻿using Readers.Core.Contracts;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Readers.Core.Contracts;
 using Readers.Data;
 using Readers.Data.DataModels;
 
@@ -6,7 +8,7 @@ namespace Readers.Core.Services
 {
     public class CommentService(ApplicationDbContext context) : ICommentService
     {
-        public async Task CreateBookComment(int bookId, string text, string userId)
+        public async Task CreateAsync(int bookId, string text, string userId)
         {
             var book = await context.Books.FindAsync(bookId)
             ?? throw new InvalidOperationException($"Book with id {bookId} not found.");
@@ -20,6 +22,17 @@ namespace Readers.Core.Services
             });
 
             await context.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteAsync(int commentId, string userId)
+        {
+            var comment = await context.Comments.FindAsync(commentId);
+            if (comment == null || comment.UserId != userId)
+                return false;
+
+            context.Comments.Remove(comment);
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

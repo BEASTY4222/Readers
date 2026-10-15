@@ -40,9 +40,24 @@ namespace Readers.Web.Controllers
             // Slim chance of this happeing but still better to be safe than sorry
             string userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User ID not found.");
 
-            await commentService.CreateBookComment(id, text, userId);
+            await commentService.CreateAsync(id, text, userId);
 
             return RedirectToAction("Details", "Books", new { id = id });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/Comment/Delete")]
+        public async Task<IActionResult> Delete(int commentId, int bookId)
+        {
+            var userId = userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            var success = await commentService.DeleteAsync(commentId, userId);
+            if (!success) return Forbid();
+
+            return RedirectToAction("Details", "Books", new { id = bookId });
         }
     }
 }
