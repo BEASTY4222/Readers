@@ -1,131 +1,123 @@
 # Readers
 
-A social reading platform where book lovers can connect, discover new books, and share their thoughts with a like-minded community.
+**A place to discover books and share what you think about them.**
 
-Users can browse a curated collection of books, search by title, author, or genre, and interact through likes and comments on their favorite reads.
+Readers is a web application for browsing a book catalogue, searching by title, author, or genre, and joining in through comments and likes. It is built with ASP.NET Core and uses ASP.NET Core Identity for user accounts.
 
----
+> This repository is an educational project. Review and adapt its configuration, security, and operational practices before using it in production.
+
+## Contents
+
+- [Features](#features)
+- [Technology](#technology)
+- [Solution structure](#solution-structure)
+- [Getting started](#getting-started)
+- [Database and sample data](#database-and-sample-data)
+- [Localization](#localization)
+- [Current scope](#current-scope)
 
 ## Features
 
-- **User accounts** — register, log in, and manage your profile via ASP.NET Core Identity
-- **Book catalogue** — browse a grid of books with cover art, author, genre, and publication details
-- **Search & filter** — find books by title, author, or genre through a slide-in search panel
-- **Likes & comments** — engage with books by liking them and leaving comments
-- **Responsive design** — clean, card-based layout that adapts to desktop and mobile
+- Browse book details, including author, genre, publication year, publisher, page count, and cover art.
+- Search by title and author with whitespace-normalized matching; filter by an exact genre.
+- Register and sign in using ASP.NET Core Identity.
+- Like books and create, edit, or delete your own comments when signed in.
+- Use the localized application culture settings for English (United States) and Bulgarian (Bulgaria).
 
----
+The catalogue currently displays at most **40 books**. Book browsing is available at `/Books`.
 
-## Technologies
+## Technology
 
-| Layer | Stack |
-|---|---|
-| Language | C# |
-| Framework | ASP.NET Core MVC (.NET 10) |
-| Database | SQL Server (LocalDB) |
-| ORM | Entity Framework Core |
-| Auth | ASP.NET Core Identity |
-| Front-end | Razor Views, HTML, CSS, minimal JavaScript |
+| Area | Technology |
+| --- | --- |
+| Runtime | .NET 10 / ASP.NET Core |
+| Web UI | ASP.NET Core MVC, Razor Views, and Identity Razor Pages |
+| Data access | Entity Framework Core |
+| Database | Microsoft SQL Server (LocalDB is configured for development) |
+| Authentication | ASP.NET Core Identity |
+| Front-end assets | HTML, CSS, JavaScript, Bootstrap, and jQuery |
 
----
+## Solution structure
 
-## Getting Started
+```text
+Readers.slnx
+├── Readers/                 Web application, controllers, views, Identity pages, and static assets
+├── Readers.Core/            Book and comment service contracts and implementations
+├── Readers.Data/            EF Core context, entities, migrations, and sample-data seeder
+└── Readers.Common/          Shared data limits and application constants
+```
+
+Within the web project, `Controllers/` handles book and comment requests, `Views/` contains the MVC Razor UI, `Areas/Identity/Pages/` contains account pages, and `wwwroot/` holds static assets. The service layer is split between `Readers.Core/Contracts/` and `Readers.Core/Services/`; database entities and migrations live in `Readers.Data/`.
+
+## Getting started
 
 ### Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download) or later
-- [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (usually installed with Visual Studio)
-- Git (optional, only if you clone the repository)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- SQL Server, or SQL Server LocalDB for local development
+- The Entity Framework Core CLI (`dotnet ef`) to apply migrations
 
-### Setup
+### Restore and configure
 
-1. **Clone or download the repository**
+From the repository root, restore the solution:
 
-   Via Git:
-   ```bash
-   git clone GITHUB_PROJECT_URL
-   Or download the ZIP and extract it.
-
-### Navigate into the project folder
-
-```bash
-cd Readers/Readers
+```sh
+dotnet restore Readers.slnx
 ```
 
-You should now see folders like `Controllers`, `Views`, `Models`, `Data`, `wwwroot`, and so on.
+The application reads the `DevString` connection string first, then falls back to `DefaultConnection`. For local development, keep connection details out of source control by storing your connection string in User Secrets:
 
-### Apply database migrations
-
-Open a terminal in the project folder and run:
-
-```bash
-dotnet ef database update
+```sh
+dotnet user-secrets set "ConnectionStrings:DevString" "<your SQL Server connection string>" --project Readers
 ```
 
-This creates the database on your local SQL Server LocalDB instance and seeds it with an initial set of books.
+The Web project already has a User Secrets ID. User Secrets are intended for development; configure connection strings through your deployment environment or secret store outside development.
+
+If `dotnet ef` is not installed, install a version compatible with the EF Core packages in the solution:
+
+```sh
+dotnet tool install --global dotnet-ef --version 10.0.12
+```
+
+### Create or update the database
+
+Run the existing EF Core migrations from the repository root:
+
+```sh
+dotnet ef database update --project Readers.Data --startup-project Readers --context ApplicationDbContext
+```
 
 ### Run the application
 
-```bash
-dotnet run
+```sh
+dotnet run --project Readers
 ```
 
-### Open the site
+Open the HTTPS URL printed by the application in your browser. To compile the full solution without running it:
 
-The terminal will print a URL such as `https://localhost:5160`. Open it in your browser.
-
----
-
-## Project Structure
-
-```
-Readers/
-├── Controllers/        MVC controllers
-├── Data/               DbContext, migrations, seeders
-│   ├── DataModels/     Entity classes (Book, Author, Comment, Like)
-│   ├── Migrations/     EF Core migrations
-│   └── Seed/           Database seeding logic
-├── Models/             ViewModels and DTOs
-├── Views/              Razor views
-│   ├── Books/          Book listing and search
-│   ├── Home/           Homepage and privacy policy
-│   └── Shared/         Layout and partials
-├── wwwroot/            Static assets
-│   ├── BookCovers/     Book cover images (WebP)
-│   ├── css/            Stylesheets
-│   └── js/             Client scripts
-└── Program.cs          App configuration and service registration
+```sh
+dotnet build Readers.slnx
 ```
 
----
+## Database and sample data
 
-## Database Schema (High-level)
+`ApplicationDbContext` includes books, authors, comments, likes, and the ASP.NET Core Identity schema. EF Core migrations create and update the schema. A unique database index prevents the same user from liking the same book more than once.
 
-**Tables:**
+Sample catalogue entries are defined in `Readers.Data/Seed/BookSeeder.cs`, but startup seeding is currently commented out in `Readers/Program.cs`. Applying migrations alone therefore **does not populate the catalogue**.
 
-- **Books** — title, cover image, publishing house, genre, year, pages, author, likes, comments
-- **Authors** — name, country
-- **Comments** — text, associated book and user
-- **Likes** — associated book and user
-- **AspNetUsers** and related Identity tables — user accounts
+## Localization
 
-**Relationships:**
+The request localization middleware supports `en-US` and `bg-BG`, with `en-US` as the default. Culture can be selected with a query string, for example:
 
-- One Author → many Books
-- One Book → many Comments and Likes
-- One User → many Comments and Likes
+```text
+?culture=bg-BG
+```
 
----
+The browser's `Accept-Language` header is also considered. Culture support is configured in the application; translated UI resources depend on the localization resources available in the project.
 
-## Roadmap / Known Limitations
+## Current scope
 
-- [ ] Multi-author support (currently one author per book)
-- [ ] Full localization support (Bulgarian and English)
-- [ ] User profiles with personal shelves
-- [ ] Pagination on the books grid
-
----
-
-## License
-
-This project was created as part of a university course. Not intended for production use.
+- Each book is associated with one author.
+- The catalogue has a fixed display limit and does not currently provide pagination.
+- Sample data is available in the repository but is not seeded automatically.
+- The project is not presented as production-ready; deployment-specific hardening, configuration, and operational setup remain the responsibility of the deployment.
