@@ -65,14 +65,6 @@ From the repository root, restore the solution:
 dotnet restore Readers.slnx
 ```
 
-The application reads the `DevString` connection string first, then falls back to `DefaultConnection`. For local development, keep connection details out of source control by storing your connection string in User Secrets:
-
-```sh
-dotnet user-secrets set "ConnectionStrings:DevString" "<your SQL Server connection string>" --project Readers
-```
-
-The Web project already has a User Secrets ID. User Secrets are intended for development; configure connection strings through your deployment environment or secret store outside development.
-
 If `dotnet ef` is not installed, install a version compatible with the EF Core packages in the solution:
 
 ```sh
