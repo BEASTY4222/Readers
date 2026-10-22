@@ -54,7 +54,7 @@ Within the web project, `Controllers/` handles book and comment requests, `Views
 ### Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- SQL Server, or SQL Server LocalDB for local development
+- SQL Server with a running default instance (`Server=.` in the connection string)
 - The Entity Framework Core CLI (`dotnet ef`) to apply migrations
 
 ### Restore and configure
@@ -64,6 +64,16 @@ From the repository root, restore the solution:
 ```sh
 dotnet restore Readers.slnx
 ```
+
+The default connection string is configured in `Readers/appsettings.json` as `ConnectionStrings:DefaultConnection`. It uses Windows integrated authentication and connects to the `ReadersDb` database on the local default SQL Server instance. Install and start that SQL Server instance before applying migrations. The project does not use LocalDB by default.
+
+To use a different SQL Server instance, override `ConnectionStrings:DefaultConnection` with the `ConnectionStrings__DefaultConnection` environment variable. For example, in PowerShell, set it before running the migration and application commands:
+
+```powershell
+$env:ConnectionStrings__DefaultConnection = "Server=YOUR_SERVER;Database=ReadersDb;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"
+```
+
+The default configuration uses Windows authentication and contains no database username or password. Do not commit real credentials to the repository.
 
 If `dotnet ef` is not installed, install a version compatible with the EF Core packages in the solution:
 
