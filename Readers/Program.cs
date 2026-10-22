@@ -27,8 +27,8 @@ ApplyLocalization(builder, localizationOptions);
 // Build the web application instance
 var app = builder.Build();
 
-// Optional: Apply database seeding (currently commented out)
-//SeedDB(app.Services);
+
+SeedDB(app.Services);
 
 // Configure the HTTP request pipeline based on environment
 if (app.Environment.IsDevelopment())
