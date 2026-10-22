@@ -27,6 +27,7 @@ namespace Readers.Web.Controllers
         /// - Comment is not empty or whitespace-only
         /// - Comment length is between CommentContentMinLength and CommentContentMaxLength (5-500 characters)
         /// Model state errors are added and user is redirected to the book details page on validation failure.
+        /// keeping the model erorrs via TempData["CommentError"] for display in the view.
         /// </remarks>
         [Authorize]
         [HttpPost]
@@ -40,20 +41,20 @@ namespace Readers.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(text))
             {
-                ModelState.AddModelError("text", "Comment text cannot be empty.");
-                return RedirectToAction($"Details", "Books", new { id = id });
+                TempData["CommentError"] = "Comment text cannot be empty.";
+                return RedirectToAction("Details", "Books", new { id });
             }
 
             if (text.Length > EntityDataLimits.CommentContentMaxLength)
             {
-                ModelState.AddModelError("text", "Comment text cannot exceed 500 characters.");
-                return RedirectToAction($"Details", "Books", new { id = id });
+                TempData["CommentError"] = "Comment text cannot exceed 500 characters.";
+                return RedirectToAction("Details", "Books", new { id });
             }
 
             if (text.Length < EntityDataLimits.CommentContentMinLenght)
             {
-                ModelState.AddModelError("text", "Comment text must be at least 5 characters long.");
-                return RedirectToAction($"Details", "Books", new { id = id });
+                TempData["CommentError"] = "Comment text must be at least 5 characters long.";
+                return RedirectToAction("Details", "Books", new { id });
             }
 
             // Retrieve the current user's ID; throws if not found (rare edge case, but defensive programming)
@@ -112,7 +113,7 @@ namespace Readers.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(content))
             {
-                ModelState.AddModelError("content", "Comment text cannot be empty.");
+                TempData["CommentError"] = "Comment text cannot be empty.";
                 return RedirectToAction("Details", "Books", new { id = bookId });
             }
 
@@ -120,7 +121,7 @@ namespace Readers.Web.Controllers
             if (content.Length < EntityDataLimits.CommentContentMinLenght ||
                 content.Length > EntityDataLimits.CommentContentMaxLength)
             {
-                ModelState.AddModelError("content", "Comment length is invalid.");
+                TempData["CommentError"] = "Comment length is invalid.";
                 return RedirectToAction("Details", "Books", new { id = bookId });
             }
 

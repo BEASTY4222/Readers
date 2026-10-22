@@ -256,6 +256,13 @@
     </div>
 </div>
 
+@if (TempData["CommentError"] is string error)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
 @* temporary script to handle comment edit toggling *@
 @section Scripts {
     <script>
