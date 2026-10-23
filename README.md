@@ -33,7 +33,7 @@ The catalogue currently displays at most **40 books**. Book browsing is availabl
 | Runtime | .NET 10 / ASP.NET Core |
 | Web UI | ASP.NET Core MVC, Razor Views, and Identity Razor Pages |
 | Data access | Entity Framework Core |
-| Database | Microsoft SQL Server (LocalDB is configured for development) |
+| Database | Microsoft SQL Server |
 | Authentication | ASP.NET Core Identity |
 | Front-end assets | HTML, CSS, JavaScript, Bootstrap, and jQuery |
 
