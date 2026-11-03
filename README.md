@@ -13,7 +13,6 @@ Readers is a web application for browsing a book catalogue, searching by title, 
 - [Solution structure](#solution-structure)
 - [Getting started](#getting-started)
 - [Database and sample data](#database-and-sample-data)
-- [Localization](#localization)
 - [Current scope](#current-scope)
 
 ## Features
@@ -106,16 +105,6 @@ dotnet build Readers.slnx
 `ApplicationDbContext` includes books, authors, comments, likes, and the ASP.NET Core Identity schema. EF Core migrations create and update the schema. A unique database index prevents the same user from liking the same book more than once.
 
 Sample catalogue entries are defined in `Readers.Data/Seed/BookSeeder.cs`, but startup seeding is currently commented out in `Readers/Program.cs`. Applying migrations alone therefore **does not populate the catalogue**.
-
-## Localization
-
-The request localization middleware supports `en-US` and `bg-BG`, with `en-US` as the default. Culture can be selected with a query string, for example:
-
-```text
-?culture=bg-BG
-```
-
-The browser's `Accept-Language` header is also considered. Culture support is configured in the application; translated UI resources depend on the localization resources available in the project.
 
 ## Current scope
 
