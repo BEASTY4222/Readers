@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Readers.Data\Readers.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Output\" />
+  </ItemGroup>
+
 </Project>
