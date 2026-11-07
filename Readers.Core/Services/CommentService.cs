@@ -52,12 +52,12 @@ namespace Readers.Core.Services
         /// Authorization is enforced: attempting to delete another user's comment will return false.
         /// This method uses a fail-silently pattern appropriate for API responses.
         /// </remarks>
-        public async Task<bool> DeleteAsync(int commentId, string userId)
+        public async Task<bool> DeleteAsync(DeleteCommentDTO commentDto)
         {
-            var comment = await context.Comments.FindAsync(commentId);
+            var comment = await context.Comments.FindAsync(commentDto.CommentId);
 
             // Check that the comment exists and the user is authorized to delete it
-            if (comment == null || comment.UserId != userId)
+            if (comment == null || comment.UserId != commentDto.UserId)
                 return false;
 
             context.Comments.Remove(comment);

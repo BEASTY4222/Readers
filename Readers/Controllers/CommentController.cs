@@ -86,13 +86,16 @@ namespace Readers.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Comment/Delete")]
-        public async Task<IActionResult> Delete(int commentId, int bookId)
+        public async Task<IActionResult> Delete(Guid commentId, Guid bookId)
         {
-            var userId = userManager.GetUserId(User);
+            string? userId = userManager.GetUserId(User);
             if (userId == null) return Challenge();
 
             // Attempt to delete; returns false if user is not the comment author
-            var success = await commentService.DeleteAsync(commentId, userId);
+            bool success = await commentService.DeleteAsync(new DeleteCommentDTO { 
+                CommentId = commentId, 
+                UserId = userId 
+            });
             if (!success) return Forbid();
 
             return RedirectToAction("Details", "Books", new { id = bookId });

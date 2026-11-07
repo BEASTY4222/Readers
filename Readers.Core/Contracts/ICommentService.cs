@@ -33,7 +33,7 @@ namespace Readers.Core.Contracts
         /// <param name="userId">The unique identifier of the user requesting deletion.</param>
         /// <returns>True if the comment was successfully deleted; false if the comment does not exist or the user is not the author.</returns>
         /// <remarks>Authorization is enforced: only the comment author can delete their own comments.</remarks>
-        Task<bool> DeleteAsync(int commentId, string userId);
+        Task<bool> DeleteAsync(DeleteCommentDTO commentDto);
 
         /// <summary>
         /// Updates the content of a comment if the requesting user is its author.
