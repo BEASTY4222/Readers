@@ -115,7 +115,7 @@ namespace Readers.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Comment/Edit")]
-        public async Task<IActionResult> Edit(int commentId, int bookId, string content)
+        public async Task<IActionResult> Edit(Guid commentId, Guid bookId, string content)
         {
             if (string.IsNullOrWhiteSpace(content))
             {
@@ -135,7 +135,12 @@ namespace Readers.Web.Controllers
             if (userId == null) return Challenge();
 
             // Attempt to edit; returns false if user is not the comment author
-            var success = await commentService.EditAsync(commentId, userId, content);
+            var success = await commentService.EditAsync(new EditCommentDTO
+            {
+                CommentId = commentId,
+                UserId = userId,
+                Content = content
+            });
             if (!success) return Forbid();
 
             return RedirectToAction("Details", "Books", new { id = bookId });

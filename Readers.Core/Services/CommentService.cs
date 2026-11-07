@@ -76,15 +76,15 @@ namespace Readers.Core.Services
         /// Authorization is enforced: attempting to edit another user's comment will return false.
         /// The content is trimmed before persisting to remove leading/trailing whitespace.
         /// </remarks>
-        public async Task<bool> EditAsync(int commentId, string userId, string newContent)
+        public async Task<bool> EditAsync(EditCommentDTO commentDto)
         {
-            var comment = await context.Comments.FindAsync(commentId);
+            var comment = await context.Comments.FindAsync(commentDto.CommentId);
 
             // Check that the comment exists and the user is authorized to edit it
-            if (comment == null || comment.UserId != userId)
+            if (comment == null || comment.UserId != commentDto.UserId)
                 return false;
 
-            comment.Content = newContent.Trim();
+            comment.Content = commentDto.Content.Trim();
             await context.SaveChangesAsync();
             return true;
         }

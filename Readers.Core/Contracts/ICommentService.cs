@@ -46,6 +46,6 @@ namespace Readers.Core.Contracts
         /// Authorization is enforced: only the comment author can edit their own comments.
         /// The new content is trimmed before persisting.
         /// </remarks>
-        Task<bool> EditAsync(int commentId, string userId, string newContent);
+        Task<bool> EditAsync(EditCommentDTO commentDto);
     }
 }
