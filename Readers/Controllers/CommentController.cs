@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Readers.Common;
 using Readers.Core.Contracts;
+using Readers.Core.DTOs.Input;
 using Readers.Data.DataModels;
 
 namespace Readers.Web.Controllers
@@ -60,7 +61,12 @@ namespace Readers.Web.Controllers
             // Retrieve the current user's ID; throws if not found (rare edge case, but defensive programming)
             string userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User ID not found.");
 
-            await commentService.CreateAsync(id, text, userId);
+            await commentService.CreateAsync(new CreateCommentDTO
+            {
+                BookId = id,
+                Content = text,
+                UserId = userId
+            });
 
             return RedirectToAction("Details", "Books", new { id = id });
         }

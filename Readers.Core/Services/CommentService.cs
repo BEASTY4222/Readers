@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Readers.Core.Contracts;
 using Readers.Data;
 using Readers.Data.DataModels;
+using Readers.Core.DTOs.Input;
 
 namespace Readers.Core.Services
 {
@@ -24,18 +25,18 @@ namespace Readers.Core.Services
         /// The comment's CreatedAt timestamp is automatically set to the current UTC time.
         /// Verifies that the book exists before creating the comment to maintain referential integrity.
         /// </remarks>
-        public async Task CreateAsync(Guid bookId, string text, string userId)
+        public async Task CreateAsync(CreateCommentDTO commentDto)
         {
             // Verify the book exists before creating a comment
-            var book = await context.Books.FindAsync(bookId)
-            ?? throw new InvalidOperationException($"Book with id {bookId} not found.");
+            Book book = await context.Books.FindAsync(commentDto.BookId)
+            ?? throw new InvalidOperationException($"Book with id {commentDto.BookId} not found.");
 
             context.Comments.Add(new Comment
             {
-                BookId = bookId,
-                Content = text,
+                BookId = commentDto.BookId,
+                Content = commentDto.Content,
                 CreatedAt = DateTime.UtcNow,
-                UserId = userId
+                UserId = commentDto.UserId
             });
 
             await context.SaveChangesAsync();

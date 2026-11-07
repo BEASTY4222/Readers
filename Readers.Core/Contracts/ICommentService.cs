@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Readers.Core.DTOs.Input;
 
 namespace Readers.Core.Contracts
 {
@@ -23,7 +24,7 @@ namespace Readers.Core.Contracts
         /// Throws InvalidOperationException if the book does not exist.
         /// The comment's CreatedAt timestamp is set to UTC Now at the time of creation.
         /// </remarks>
-        Task CreateAsync(Guid bookId, string text, string userId);
+        Task CreateAsync(CreateCommentDTO commentDto);
 
         /// <summary>
         /// Deletes a comment if the requesting user is its author.
