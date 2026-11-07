@@ -14,7 +14,7 @@ namespace Readers.Web.ViewModels
         /// <summary>
         /// Gets or sets the unique identifier of the book.
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the file path or URL to the book's cover image.

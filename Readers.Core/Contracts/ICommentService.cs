@@ -23,7 +23,7 @@ namespace Readers.Core.Contracts
         /// Throws InvalidOperationException if the book does not exist.
         /// The comment's CreatedAt timestamp is set to UTC Now at the time of creation.
         /// </remarks>
-        Task CreateAsync(int bookId, string text, string userId);
+        Task CreateAsync(Guid bookId, string text, string userId);
 
         /// <summary>
         /// Deletes a comment if the requesting user is its author.

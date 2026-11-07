@@ -14,7 +14,7 @@ namespace Readers.Data.DataModels
         /// Gets or sets the unique identifier for the book.
         /// </summary>
         [Key]
-        public Guid Id { get; set; } = new Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets or sets the title of the book.
@@ -41,7 +41,7 @@ namespace Readers.Data.DataModels
         /// Required foreign key referencing the Author entity.
         /// </remarks>
         [Required]
-        public int AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation property for the book's author.

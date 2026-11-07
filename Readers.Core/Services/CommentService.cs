@@ -24,7 +24,7 @@ namespace Readers.Core.Services
         /// The comment's CreatedAt timestamp is automatically set to the current UTC time.
         /// Verifies that the book exists before creating the comment to maintain referential integrity.
         /// </remarks>
-        public async Task CreateAsync(int bookId, string text, string userId)
+        public async Task CreateAsync(Guid bookId, string text, string userId)
         {
             // Verify the book exists before creating a comment
             var book = await context.Books.FindAsync(bookId)

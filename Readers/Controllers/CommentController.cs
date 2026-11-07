@@ -32,9 +32,9 @@ namespace Readers.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/Comment/Create")]
-        public async Task<IActionResult> Create([FromForm] int id, [FromForm] string text)
+        public async Task<IActionResult> Create([FromForm] Guid id, [FromForm] string text)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
             {
                 return BadRequest();
             }

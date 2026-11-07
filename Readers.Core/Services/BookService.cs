@@ -56,7 +56,7 @@ namespace Readers.Core.Services
         /// </summary>
         /// <param name="id">The unique identifier of the author.</param>
         /// <returns>The total count of books by the specified author.</returns>
-        public async Task<int> GetAuthorBookCount(int id)
+        public async Task<int> GetAuthorBookCount(Guid id)
             => await context.Books.CountAsync(b => b.AuthorId == id);
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Readers.Core.Services
         /// <param name="id">The unique identifier of the book to retrieve.</param>
         /// <returns>The book object with author, likes, and comments (including comment authors) if found; null otherwise.</returns>
         /// <remarks>This method eagerly loads comments with their associated users to avoid N+1 query problems in the view layer.</remarks>
-        public async Task<Book?> GetByIdAsync(int id)
+        public async Task<Book?> GetByIdAsync(Guid id)
         {
             return await context.Books
                 .Include(b => b.Author)
@@ -132,7 +132,7 @@ namespace Readers.Core.Services
         /// This method uses an idempotent pattern: calling it multiple times with the same parameters
         /// will correctly toggle the like state back and forth.
         /// </remarks>
-        public async Task<bool> ToggleLikeAsync(int bookId, string userId)
+        public async Task<bool> ToggleLikeAsync(Guid bookId, string userId)
         {
             // Check if the user has already liked this book
             var existingLike = await context.Likes
@@ -162,7 +162,7 @@ namespace Readers.Core.Services
         /// <param name="bookId">The unique identifier of the book.</param>
         /// <param name="userId">The unique identifier of the user.</param>
         /// <returns>True if the user has liked the book; false otherwise.</returns>
-        public async Task<bool> UserHasLikedAsync(int bookId, string userId)
+        public async Task<bool> UserHasLikedAsync(Guid bookId, string userId)
         {
             return await context.Likes
                 .AnyAsync(l => l.BookId == bookId && l.UserId == userId);

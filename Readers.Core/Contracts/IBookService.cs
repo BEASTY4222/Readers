@@ -39,7 +39,7 @@ namespace Readers.Core.Contracts
         /// </summary>
         /// <param name="id">The unique identifier of the author.</param>
         /// <returns>The total count of books written by the specified author.</returns>
-        Task<int> GetAuthorBookCount(int id);
+        Task<int> GetAuthorBookCount(Guid id);
 
         /// <summary>
         /// Retrieves a specific book by its identifier, including all related data.
@@ -47,7 +47,7 @@ namespace Readers.Core.Contracts
         /// <param name="id">The unique identifier of the book to retrieve.</param>
         /// <returns>The book object if found; null if the book does not exist.</returns>
         /// <remarks>Includes related entities: author, likes, and comments with user information.</remarks>
-        Task<Book?> GetByIdAsync(int id);
+        Task<Book?> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Searches for books based on optional title, author, and genre criteria.
@@ -69,7 +69,7 @@ namespace Readers.Core.Contracts
         /// <param name="userId">The unique identifier of the user toggling the like.</param>
         /// <returns>True if the book is now liked; false if the like was removed.</returns>
         /// <remarks>If the user has already liked the book, the like is removed; otherwise, a new like is added.</remarks>
-        Task<bool> ToggleLikeAsync(int bookId, string userId);
+        Task<bool> ToggleLikeAsync(Guid bookId, string userId);
 
         /// <summary>
         /// Checks whether a specific user has liked a particular book.
@@ -77,6 +77,6 @@ namespace Readers.Core.Contracts
         /// <param name="bookId">The unique identifier of the book.</param>
         /// <param name="userId">The unique identifier of the user.</param>
         /// <returns>True if the user has liked the book; false otherwise.</returns>
-        Task<bool> UserHasLikedAsync(int bookId, string userId);
+        Task<bool> UserHasLikedAsync(Guid bookId, string userId);
     }
 }

@@ -101,7 +101,7 @@ namespace Readers.Web.Controllers
         /// For authenticated users, it also determines whether the current user has liked this book.
         /// ViewBag is used to pass supplementary data like AuthorBookCount and UserHasLiked to the view.
         /// </remarks>
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
             var book = await bookService.GetByIdAsync(id);
 
@@ -138,7 +138,7 @@ namespace Readers.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ToggleLike(int id)
+        public async Task<IActionResult> ToggleLike(Guid id)
         {
             var userId = userManager.GetUserId(User);
             if (userId == null)

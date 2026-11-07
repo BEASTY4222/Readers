@@ -6,7 +6,7 @@ namespace Readers.Core.DTOs.Input
 {
     public class EditCommentDTO
     {
-        public string BookId { get; set; }
+        public Guid BookId { get; set; }
         public string UserId { get; set; }
         public string Content { get; set; }
     }
