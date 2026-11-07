@@ -14,7 +14,7 @@ namespace Readers.Data.DataModels
         /// Gets or sets the unique identifier for the comment.
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets or sets the text content of the comment.
@@ -42,7 +42,7 @@ namespace Readers.Data.DataModels
         /// <remarks>
         /// Foreign key referencing the Book entity.
         /// </remarks>
-        public int BookId { get; set; }
+        public Guid BookId { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation property to the book this comment belongs to.

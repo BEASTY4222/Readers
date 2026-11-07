@@ -14,7 +14,7 @@ namespace Readers.Data.DataModels
         /// Gets or sets the unique identifier for the author.
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets or sets the name of the author.

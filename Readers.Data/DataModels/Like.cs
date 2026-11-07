@@ -13,7 +13,7 @@ namespace Readers.Data.DataModels
         /// Gets or sets the unique identifier for this like record.
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets or sets the unique identifier of the book being liked.
@@ -21,7 +21,7 @@ namespace Readers.Data.DataModels
         /// <remarks>
         /// Foreign key referencing the Book entity.
         /// </remarks>
-        public int BookId { get; set; }
+        public Guid BookId { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation property to the book being liked.
