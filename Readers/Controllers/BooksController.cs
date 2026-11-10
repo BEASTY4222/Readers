@@ -17,6 +17,7 @@ namespace Readers.Web.Controllers
     /// Handles HTTP requests related to book browsing, searching, viewing details, and managing user likes.
     /// Provides endpoints for displaying books, filtering by search criteria, and toggling like status for authenticated users.
     /// </summary>
+    [TrackExecutionTimeAttribute]
     public class BooksController(IBookService bookService, UserManager<ApplicationUser> userManager) : Controller
     {
         /// <summary>
