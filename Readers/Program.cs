@@ -59,6 +59,7 @@ app.MapStaticAssets();
 
 // Has to be here, because we need the user logged in
 app.UseMiddleware<Readers.Web.Middlewares.UserActivityMiddleware>();
+app.UseMiddleware<Readers.Web.Middlewares.MaintenanceMiddleware>();
 
 // Register the default controller route
 app.MapControllerRoute(
