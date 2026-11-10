@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Under Maintenance";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Readers</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f7f5f2;
+            color: #2d2a26;
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0;
+        }
+        .maintenance-card {
+            background: #ffffff;
+            border: 1px solid #e8e2db;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            animation: float 4s ease-in-out infinite;
+        }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #2d2a26;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #6b6560;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="maintenance-card">
+        <div class="icon">📚</div>
+        <h1>We'll be right back!</h1>
+        <p>Readers is currently undergoing scheduled maintenance to improve your experience. Please check back in a little while.</p>
+    </div>
+</body>
+</html>

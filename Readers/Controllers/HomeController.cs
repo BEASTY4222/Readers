@@ -22,7 +22,10 @@ namespace Readers.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+        [Route("Maintenance")]
+        public IActionResult Maintenance()
+        {
+            return View();
         }
     }
 }
