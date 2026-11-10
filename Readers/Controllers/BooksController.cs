@@ -9,6 +9,7 @@ using Readers.Data;
 using Readers.Data.DataModels;
 using Readers.Web.ViewModels;
 using System.Linq;
+using Readers.Web.Filters;
 
 namespace Readers.Web.Controllers
 {
@@ -101,12 +102,12 @@ namespace Readers.Web.Controllers
         /// For authenticated users, it also determines whether the current user has liked this book.
         /// ViewBag is used to pass supplementary data like AuthorBookCount and UserHasLiked to the view.
         /// </remarks>
+        [BookExists]
         public async Task<IActionResult> Details(Guid id)
         {
-            var book = await bookService.GetByIdAsync(id);
+            Book book = await bookService.GetByIdAsync(id);
 
-            if (book == null)
-                return NotFound();
+            // No check if the book exists the filter already checks
 
             // Retrieve the total number of books published by this author for the "About the author" section
             ViewBag.AuthorBookCount = await bookService.GetAuthorBookCount(book.AuthorId);
