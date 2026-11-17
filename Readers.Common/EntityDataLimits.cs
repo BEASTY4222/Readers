@@ -50,5 +50,10 @@ namespace Readers.Common
         public const int UserTypedNameMinLength = 2;
         public const int UserTypedNameMaxLength = 50;
         /*Application User End*/
+
+        /*Publisher Begin*/
+        public const int PublisherNameMinLength = 3;
+        public const int PublisherNameMaxLength = 100;
+        /*Publisher End*/
     }
 }
