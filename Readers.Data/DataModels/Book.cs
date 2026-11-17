@@ -51,15 +51,8 @@ namespace Readers.Data.DataModels
         /// </remarks>
         public Author Author { get; set; } = null!;
 
-        /// <summary>
-        /// Gets or sets the name of the publishing house that published this book.
-        /// </summary>
-        /// <remarks>
-        /// Required field. Length must be between PublishingHouseMinLength and PublishingHouseMaxLength characters.
-        /// </remarks>
-        [Required]
-        [StringLength(EntityDataLimits.PublishingHouseMaxLength, MinimumLength = EntityDataLimits.PublishingHouseMinLenght)]
-        public string PublishingHouse { get; set; } = null!;
+        public Guid PublisherId { get; set; }
+        public Publisher Publisher { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the genre/category of the book (e.g., "Fiction", "Science", "Biography").
