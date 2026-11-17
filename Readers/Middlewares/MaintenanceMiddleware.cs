@@ -21,6 +21,7 @@ namespace Readers.Web.Middlewares
             if (isMaintenanceMode)
             {
                 bool isAdmin = context.User.IsInRole("Admin");
+                bool isStaticFile = context.Request.Path.StartsWithSegments("/css");
                 // This is a temporary band-aid because I dont know how roles work
                 //bool isLocal = context.Connection.RemoteIpAddress?.ToString() == "127.0.0.1" || context.Connection.RemoteIpAddress?.ToString() == "::1";
                 if (context.Request.Path.StartsWithSegments("/Maintenance"))
@@ -29,7 +30,7 @@ namespace Readers.Web.Middlewares
                     return;
                 }
                     
-                if (!isAdmin)
+                if (!isAdmin && !isStaticFile)
                 {
                     // Redirect to the view
                     context.Response.Redirect("/Maintenance");
