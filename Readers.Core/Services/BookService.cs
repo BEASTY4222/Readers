@@ -69,6 +69,7 @@ namespace Readers.Core.Services
         {
             return await context.Books
                 .Include(b => b.Author)
+                .Include(b => b.Publisher)
                 .Include(b => b.Likes)
                 .Include(b => b.Comments)
                     .ThenInclude(c => c.User)
