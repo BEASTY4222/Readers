@@ -355,6 +355,35 @@ namespace Readers.Data.Migrations
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("Readers.Data.DataModels.UserShelf", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId", "BookId")
+                        .IsUnique();
+
+                    b.ToTable("UserShelves");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -463,11 +492,32 @@ namespace Readers.Data.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("Readers.Data.DataModels.UserShelf", b =>
+                {
+                    b.HasOne("Readers.Data.DataModels.Book", "Book")
+                        .WithMany("UserBooks")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Readers.Data.DataModels.ApplicationUser", "User")
+                        .WithMany("UserBooks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Readers.Data.DataModels.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("UserBooks");
                 });
 
             modelBuilder.Entity("Readers.Data.DataModels.Author", b =>
@@ -480,6 +530,8 @@ namespace Readers.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("UserBooks");
                 });
 
             modelBuilder.Entity("Readers.Data.DataModels.Publisher", b =>
