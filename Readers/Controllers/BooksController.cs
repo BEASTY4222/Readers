@@ -108,6 +108,20 @@ namespace Readers.Web.Controllers
         {
             Book book = await bookService.GetByIdAsync(id);
 
+            BookDetailsViewModel ViewBook = new BookDetailsViewModel
+            {
+                Id = book.Id,
+                Title = book.Title,
+                CoverImagePath = book.CoverImagePath,
+                Author = book.Author,
+                PublisherName = book.Publisher.Name,
+                Genre = book.Genre,
+                YearPublished = book.YearPublished,
+                Pages = book.Pages,
+                Likes = book.Likes,
+                Comments = book.Comments
+            };
+
             // No check if the book exists the filter already checks
 
             // Retrieve the total number of books published by this author for the "About the author" section
@@ -123,7 +137,7 @@ namespace Readers.Web.Controllers
                 }
             }
 
-            return View(book);
+            return View(ViewBook);
         }
 
         /// <summary>
