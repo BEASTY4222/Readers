@@ -1,4 +1,4 @@
-﻿@model Readers.Data.DataModels.Book
+﻿@model Readers.Web.ViewModels.BookDetailsViewModel
 @{
     ViewData["Title"] = Model.Title;
     var authorBookCount = (int)(ViewBag.AuthorBookCount ?? 0);
@@ -84,7 +84,7 @@
 
                 <header class="book-header">
                     <h1 class="book-title-large">@Model.Title</h1>
-                    <a href="#" class="book-author-link">@Model.Author.Name</a>
+                    <a href="#" class="book-author-link">@Model.Author</a>
                 </header>
 
                 @* ---------- Genre pills ---------- *@
@@ -104,7 +104,7 @@
                         </li>
                         <li>
                             <span class="info-label">Publisher</span>
-                            <span class="info-value">@Model.PublishingHouse</span>
+                            <span class="info-value">@Model.PublisherName</span>
                         </li>
                         <li>
                             <span class="info-label">First published</span>
