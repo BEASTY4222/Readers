@@ -10,6 +10,7 @@ namespace Readers.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<UserShelf> UserShelves { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -17,6 +18,9 @@ namespace Readers.Data
 
             builder.Entity<Like>()
                 .HasIndex(l => new { l.UserId, l.BookId })
+                .IsUnique();
+            builder.Entity<UserShelf>()
+                .HasIndex(us => new { us.UserId, us.BookId })
                 .IsUnique();
         }
     }
