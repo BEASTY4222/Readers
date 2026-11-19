@@ -36,5 +36,6 @@ namespace Readers.Data.DataModels
         /// Populated when a user likes a book via the ToggleLike action.
         /// </remarks>
         public ICollection<Like> Likes { get; set; } = new List<Like>();
+        public ICollection<UserShelf> UserBooks { get; set; } = new List<UserShelf>();
     }
 }

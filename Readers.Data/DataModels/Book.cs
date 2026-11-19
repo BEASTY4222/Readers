@@ -102,5 +102,7 @@ namespace Readers.Data.DataModels
         /// Initialized to an empty list by default.
         /// </remarks>
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+        public virtual ICollection<UserShelf> UserBooks { get; set; } = new List<UserShelf>();
     }
 }
