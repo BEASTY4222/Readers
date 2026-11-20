@@ -614,3 +614,57 @@
         color: var(--bd-accent);
         font-weight: 600;
     }
+
+/* ---------- Shelf Dropdown ---------- */
+.shelf-form {
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.shelf-select {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--bd-accent);
+    background-color: var(--bd-accent-soft);
+    /* Reset default appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    /* Custom border and radius */
+    border: 1px solid var(--bd-border);
+    border-radius: 999px; /* Pill shape */
+    /* Custom SVG Arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c4d2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    background-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+    .shelf-select:hover {
+        background-color: #eaddd1; /* Slightly darker beige */
+        box-shadow: 0 4px 12px rgba(124, 77, 47, 0.15);
+        transform: translateY(-1px);
+    }
+
+    .shelf-select:focus {
+        outline: none;
+        border-color: var(--bd-accent);
+        box-shadow: 0 0 0 3px rgba(124, 77, 47, 0.2);
+    }
+
+    /* Style the placeholder option differently if you want */
+    .shelf-select option {
+        background-color: #ffffff;
+        color: var(--bd-text);
+        font-weight: 400;
+    }
+
+        .shelf-select option:disabled {
+            color: #b3aca4;
+            font-style: italic;
+        }
