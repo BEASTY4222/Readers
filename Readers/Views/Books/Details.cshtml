@@ -1,4 +1,5 @@
-﻿@model Readers.Web.ViewModels.BookDetailsViewModel
+﻿@using Readers.Common
+@model Readers.Web.ViewModels.BookDetailsViewModel
 @{
     ViewData["Title"] = Model.Title;
     var authorBookCount = (int)(ViewBag.AuthorBookCount ?? 0);
@@ -112,6 +113,15 @@
                         </li>
                     </ul>
                 </section>
+
+                <form method="post" asp-controller="Shelf" asp-action="UpdateStatus" class="shelf-form">
+                    <input type="hidden" name="bookId" value="@Model.Id" />
+
+                    <!-- The asp-items tag helper renders the options automatically -->
+                    <select name="status" class="shelf-select" onchange="this.form.submit();" asp-items="Html.GetEnumSelectList<ShelfStatus>()">
+                        <option value="" disabled selected>-- Add to Shelf --</option>
+                    </select>
+                </form>
 
                 <hr class="book-divider" />
 
