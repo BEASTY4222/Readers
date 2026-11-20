@@ -18,7 +18,7 @@ namespace Readers.Web.Controllers
     /// Provides endpoints for displaying books, filtering by search criteria, and toggling like status for authenticated users.
     /// </summary>
     [TrackExecutionTimeAttribute]
-    public class BooksController(IBookService BookService, UserManager<ApplicationUser> UserManager) : Controller
+    public class BooksController(IBookService BookService, IShelfService ShelfService, UserManager<ApplicationUser> UserManager) : Controller
     {
         /// <summary>
         /// Displays the index page with all available books and genres for filtering.
@@ -163,6 +163,20 @@ namespace Readers.Web.Controllers
             await BookService.ToggleLikeAsync(id, userId);
 
             return RedirectToAction("Details", new { id });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserExists]
+        public async Task<IActionResult> UpdateStatus(Guid bookId, ShelfStatus status)
+        {
+            string userId = UserManager.GetUserId(User);
+
+            // Pass the enum to your service
+            await ShelfService.UpdateShelfStatusAsync(userId, bookId, status);
+
+            return RedirectToAction("Details", "Books", new { id = bookId });
         }
     }
 }
