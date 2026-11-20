@@ -15,6 +15,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Register application services with the dependency injection container
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IShelfService, ShelfService>();
 
 // Configure database context and Entity Framework Core
 ApplyDBContext(builder);
