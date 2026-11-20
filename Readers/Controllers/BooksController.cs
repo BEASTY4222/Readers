@@ -18,7 +18,7 @@ namespace Readers.Web.Controllers
     /// Provides endpoints for displaying books, filtering by search criteria, and toggling like status for authenticated users.
     /// </summary>
     [TrackExecutionTimeAttribute]
-    public class BooksController(IBookService bookService, UserManager<ApplicationUser> userManager) : Controller
+    public class BooksController(IBookService BookService, UserManager<ApplicationUser> UserManager) : Controller
     {
         /// <summary>
         /// Displays the index page with all available books and genres for filtering.
@@ -33,7 +33,7 @@ namespace Readers.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Retrieve all books from database (respects MaxBooksToDisplay limit as of 26.09.2026)
-            List<Book> books = (await bookService.GetAllBooks()).ToList();
+            List<Book> books = (await BookService.GetAllBooks()).ToList();
 
             // Map Book entities to BookViewModels for safe presentation to the view layer
             List<BookViewModel> bookViewModels = books
@@ -52,7 +52,7 @@ namespace Readers.Web.Controllers
             return View(new BookIndexViewModel
             {
                 Books = bookViewModels,
-                Genres = (await bookService.GetGenres()).ToList()
+                Genres = (await BookService.GetGenres()).ToList()
             });
         }
 
@@ -69,7 +69,7 @@ namespace Readers.Web.Controllers
         public async Task<IActionResult> Search(SearchFormInputModel model)
         {
             // Execute search query with provided filters (title, author, genre)
-            var books = await bookService.SearchAsync(
+            var books = await BookService.SearchAsync(
                 model.SearchedTitle,
                 model.SearchedAuthor,
                 model.SearchedGenre);
@@ -87,7 +87,7 @@ namespace Readers.Web.Controllers
                     Comments = b.Comments
                 }).ToList(),
 
-                Genres = (await bookService.GetGenres()).ToList()
+                Genres = (await BookService.GetGenres()).ToList()
             };
 
             return View("Index", viewModel);
@@ -106,7 +106,7 @@ namespace Readers.Web.Controllers
         [BookExists]
         public async Task<IActionResult> Details(Guid id)
         {
-            Book book = await bookService.GetByIdAsync(id);
+            Book book = await BookService.GetByIdAsync(id);
 
             BookDetailsViewModel ViewBook = new BookDetailsViewModel
             {
@@ -125,15 +125,15 @@ namespace Readers.Web.Controllers
             // No check if the book exists the filter already checks
 
             // Retrieve the total number of books published by this author for the "About the author" section
-            ViewBag.AuthorBookCount = await bookService.GetAuthorBookCount(book.AuthorId);
+            ViewBag.AuthorBookCount = await BookService.GetAuthorBookCount(book.AuthorId);
 
             // Check if the current authenticated user has already liked this book
             if (User.Identity?.IsAuthenticated == true)
             {
-                var userId = userManager.GetUserId(User);
+                var userId = UserManager.GetUserId(User);
                 if (userId != null)
                 {
-                    ViewBag.UserHasLiked = await bookService.UserHasLikedAsync(id, userId);
+                    ViewBag.UserHasLiked = await BookService.UserHasLikedAsync(id, userId);
                 }
             }
 
@@ -156,11 +156,11 @@ namespace Readers.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleLike(Guid id)
         {
-            var userId = userManager.GetUserId(User);
+            var userId = UserManager.GetUserId(User);
             if (userId == null)
                 return Challenge();
 
-            await bookService.ToggleLikeAsync(id, userId);
+            await BookService.ToggleLikeAsync(id, userId);
 
             return RedirectToAction("Details", new { id });
         }
