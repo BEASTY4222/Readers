@@ -11,7 +11,7 @@ namespace Readers.Core.Services
 {
     public class ShelfService(ApplicationDbContext context) : IShelfService
     {
-        public Task UpdateShelfStatusAsync(string userId, Guid bookId, ShelfStatus status)
+        public async Task UpdateShelfStatusAsync(string userId, Guid bookId, ShelfStatus status)
         {
             // If we dont find an entry we create a new one, otherwise we update the existing entry
             if (context.UserShelves.Any(us => us.UserId == userId && us.BookId == bookId))
@@ -30,8 +30,17 @@ namespace Readers.Core.Services
                     status = status
                 });
             }
-            
-            return context.SaveChangesAsync();  
+
+            context.SaveChangesAsync();
+
+            return;
+        }
+
+        public async Task<ShelfStatus?> GetShelfAsync(string userId, Guid bookId)
+        {
+            // Fetch the UserShelf entry for the given user and book
+            var userShelf = await context.UserShelves.FirstOrDefaultAsync(us => us.UserId == userId && us.BookId == bookId);
+            return userShelf?.status;
         }
     }
 }
