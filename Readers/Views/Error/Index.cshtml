@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "_Layout"; // Keep your navbar and footer so they can navigate away!
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ErrorPage.css" asp-append-version="true" />
+}
+
+<div class="error-page">
+    <div class="error-card">
+        <div class="error-icon">@ViewData["Icon"]</div>
+        <h1 class="error-code">@ViewData["StatusCode"]</h1>
+        <h2 class="error-header">@ViewData["Header"]</h2>
+        <p class="error-message">@ViewData["Message"]</p>
+        
+        <div class="error-actions">
+            <a href="javascript:history.back()" class="btn-secondary">Go Back</a>
+            <a asp-controller="Books" asp-action="Index" class="btn-primary">Return Home</a>
+        </div>
+    </div>
+</div>
