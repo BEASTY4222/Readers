@@ -124,6 +124,15 @@ namespace Readers.Web.Controllers
 
             // No check if the book exists the filter already checks
 
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                string? userId = UserManager.GetUserId(User);
+                // Fetch their shelf entry
+                ShelfStatus? shelfEntry = await ShelfService.GetShelfAsync(userId, id);
+
+                ViewBook.ShelfStatus = shelfEntry;
+            }
+
             // Retrieve the total number of books published by this author for the "About the author" section
             ViewBag.AuthorBookCount = await BookService.GetAuthorBookCount(book.AuthorId);
 
@@ -168,7 +177,6 @@ namespace Readers.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserExists]
         public async Task<IActionResult> UpdateStatus(Guid bookId, ShelfStatus status)
         {
             string userId = UserManager.GetUserId(User);
@@ -176,7 +184,7 @@ namespace Readers.Web.Controllers
             // Pass the enum to your service
             await ShelfService.UpdateShelfStatusAsync(userId, bookId, status);
 
-            return RedirectToAction("Details", "Books", new { id = bookId });
+            return RedirectToAction("Details", new { id = bookId });
         }
     }
 }
