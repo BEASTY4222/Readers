@@ -13,6 +13,7 @@ namespace Readers.Web.ViewModels
         public string? CoverImagePath { get; set; }
 
         public Author Author { get; set; } = null!;
+        public ShelfStatus? ShelfStatus { get; set; }
 
         public string PublisherName { get; set; } = null!;
 
@@ -24,8 +25,6 @@ namespace Readers.Web.ViewModels
 
         public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-
     }
 }
 
