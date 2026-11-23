@@ -13,16 +13,18 @@ namespace Readers.Core.Services
     {
         public async Task UpdateShelfStatusAsync(string userId, Guid bookId, ShelfStatus status)
         {
-            // If we dont find an entry we create a new one, otherwise we update the existing entry
-            if (context.UserShelves.Any(us => us.UserId == userId && us.BookId == bookId))
+            // 1. Look for a shelf entry for THIS SPECIFIC BOOK
+            UserShelf? existingShelf = await context.UserShelves
+                .FirstOrDefaultAsync(us => us.UserId == userId && us.BookId == bookId);
+
+            if (existingShelf != null)
             {
-                // Getting the existing UserShelf entry for the user and book
-                UserShelf userShelf = context.UserShelves.First(us => us.UserId == userId && us.BookId == bookId);
-                // Updating the status
-                userShelf.status = status;
+                // Update the status of the existing entry
+                existingShelf.status = status;
             }
             else
             {
+                // Create a brand new entry for this book
                 context.UserShelves.Add(new UserShelf
                 {
                     UserId = userId,
@@ -31,9 +33,7 @@ namespace Readers.Core.Services
                 });
             }
 
-            context.SaveChangesAsync();
-
-            return;
+            await context.SaveChangesAsync();
         }
 
         public async Task<ShelfStatus?> GetShelfAsync(string userId, Guid bookId)
