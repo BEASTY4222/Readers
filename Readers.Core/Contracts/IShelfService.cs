@@ -8,5 +8,6 @@ namespace Readers.Core.Contracts
     public interface IShelfService
     {
         Task UpdateShelfStatusAsync(string userId, Guid bookId, ShelfStatus status);
+        Task<ShelfStatus?> GetShelfAsync(string userId, Guid bookId);
     }
 }
