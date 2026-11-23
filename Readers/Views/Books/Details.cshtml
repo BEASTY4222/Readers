@@ -114,14 +114,30 @@
                     </ul>
                 </section>
 
-                <form method="post" asp-controller="Shelf" asp-action="UpdateStatus" class="shelf-form">
-                    <input type="hidden" name="bookId" value="@Model.Id" />
+                    <form method="post" asp-controller="Books" asp-action="UpdateStatus" class="shelf-form">
+                        <input type="hidden" name="bookId" value="@Model.Id" />
 
-                    <!-- The asp-items tag helper renders the options automatically -->
-                    <select name="status" class="shelf-select" onchange="this.form.submit();" asp-items="Html.GetEnumSelectList<ShelfStatus>()">
-                        <option value="" disabled selected>-- Add to Shelf --</option>
-                    </select>
-                </form>
+                        <select name="status" class="shelf-select" onchange="this.form.submit();">
+        
+                            <!-- Placeholder option: Selected ONLY if the user hasn't picked anything yet -->
+                            <option value="" selected="@(Model.ShelfStatus == null)">
+                                -- Add to Shelf --
+                            </option>
+
+                            @foreach (var status in Enum.GetValues<ShelfStatus>())
+                            {
+                                // Converts "WantToRead" to "Want to Read"
+                                var displayName = System.Text.RegularExpressions.Regex.Replace(status.ToString(), "([a-z])([A-Z])", "$1 $2");
+            
+                                // Check if this specific status is the one saved in the database
+                                var isSelected = Model.ShelfStatus == status;
+
+                                <option value="@((int)status)" selected="@isSelected">
+                                    @displayName
+                                </option>
+                            }
+                        </select>
+                     </form>
 
                 <hr class="book-divider" />
 
