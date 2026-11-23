@@ -29,7 +29,7 @@ ApplyLocalization(builder, localizationOptions);
 var app = builder.Build();
 
 
-SeedDB(app.Services);
+await SeedDB(app.Services);
 
 // Configure the HTTP request pipeline based on environment
 if (app.Environment.IsDevelopment())
@@ -52,7 +52,7 @@ app.UseRequestLocalization(localizationOptions);
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// Enable authorization middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Map static assets for performance
@@ -102,6 +102,7 @@ static void ApplyDBContext(IHostApplicationBuilder builder)
     // Configure ASP.NET Core Identity with ApplicationUser and ApplicationDbContext
     // RequireConfirmedAccount is set to false to allow immediate login after registration
     builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
     // Add database developer page exception filter for detailed error reporting in development
@@ -156,12 +157,13 @@ static void ApplyLocalization(IHostApplicationBuilder builder, RequestLocalizati
 /// Creates a scope to access the database context and populates it with sample books and authors.
 /// Currently commented out in the main application flow.
 /// </remarks>
-static void SeedDB(System.IServiceProvider serviceProvider)
+static async Task SeedDB(System.IServiceProvider serviceProvider)
 {
-    // Create a service scope to access scoped services (DbContext)
     using (var scope = serviceProvider.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        BookSeeder.SeedAsync(context).Wait();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        await BookSeeder.SeedAsync(context, userManager, roleManager);
     }
 }

@@ -1,4 +1,5 @@
-﻿    using Microsoft.EntityFrameworkCore;
+﻿    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Readers.Data;
     using Readers.Data.DataModels;
 
@@ -6,13 +7,50 @@
     {
         public static class BookSeeder
         {
-            public static async Task SeedAsync(ApplicationDbContext context)
-            {
-                if (await context.Books.AnyAsync())
-                    return; // already seeded
+            private const string AdminEmail = "admin@readers.local";
+            private const string AdminPassword = "ReadersAdmin2026!";
+            private const string AdminRole = "Admin";
 
-                // ---------- AUTHORS ----------
-                var martin = new Author { Name = "George R.R. Martin", Country = "United States" };
+            public static async Task SeedAsync(
+                ApplicationDbContext context,
+                UserManager<ApplicationUser> userManager,
+                RoleManager<IdentityRole> roleManager)
+            {
+                if (!await roleManager.RoleExistsAsync(AdminRole))
+                {
+                    var roleResult = await roleManager.CreateAsync(new IdentityRole(AdminRole));
+                    if (!roleResult.Succeeded)
+                        throw new InvalidOperationException($"Could not create Admin role: {string.Join(", ", roleResult.Errors.Select(error => error.Description))}");
+                }
+
+                var admin = await userManager.FindByEmailAsync(AdminEmail);
+                if (admin == null)
+                {
+                    admin = new ApplicationUser
+                    {
+                        UserName = AdminEmail,
+                        Email = AdminEmail,
+                        EmailConfirmed = true,
+                        UserTypedName = "admin"
+                    };
+
+                    var userResult = await userManager.CreateAsync(admin, AdminPassword);
+                    if (!userResult.Succeeded)
+                        throw new InvalidOperationException($"Could not create admin user: {string.Join(", ", userResult.Errors.Select(error => error.Description))}");
+                }
+
+                if (!await userManager.IsInRoleAsync(admin, AdminRole))
+                {
+                    var roleResult = await userManager.AddToRoleAsync(admin, AdminRole);
+                    if (!roleResult.Succeeded)
+                        throw new InvalidOperationException($"Could not assign Admin role: {string.Join(", ", roleResult.Errors.Select(error => error.Description))}");
+                }
+
+                if (await context.Books.AnyAsync())
+                    return;
+
+            // ---------- AUTHORS ----------
+            var martin = new Author { Name = "George R.R. Martin", Country = "United States" };
                 var sanderson = new Author { Name = "Brandon Sanderson", Country = "United States" };
                 var orwell = new Author { Name = "George Orwell", Country = "United Kingdom" };
                 var dostoevsky = new Author { Name = "Fyodor Dostoevsky", Country = "Russia" };

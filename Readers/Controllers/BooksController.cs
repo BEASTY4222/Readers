@@ -106,6 +106,7 @@ namespace Readers.Web.Controllers
         [BookExists]
         public async Task<IActionResult> Details(Guid id)
         {
+
             Book book = await BookService.GetByIdAsync(id);
 
             BookDetailsViewModel ViewBook = new BookDetailsViewModel
