@@ -45,6 +45,8 @@ else
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 // Apply localization middleware to handle culture selection
 app.UseRequestLocalization(localizationOptions);
 
