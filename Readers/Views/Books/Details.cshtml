@@ -2,9 +2,46 @@
 @model Readers.Web.ViewModels.BookDetailsViewModel
 @{
     ViewData["Title"] = Model.Title;
+    ViewData["MetaDescription"] = $"Discover {Model.Title} by {Model.Author.Name}, including its genre, publisher, page count, and reader discussion.";
+    ViewData["OgType"] = "book";
+    var coverImageUrl = string.IsNullOrWhiteSpace(Model.CoverImagePath) ? null : Url.Content(Model.CoverImagePath);
+    if (coverImageUrl is not null
+        && (!Uri.TryCreate(coverImageUrl, UriKind.Absolute, out var coverUri)
+            || (coverUri.Scheme != Uri.UriSchemeHttp && coverUri.Scheme != Uri.UriSchemeHttps)))
+    {
+        coverImageUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{(coverImageUrl.StartsWith('/') ? "" : "/")}{coverImageUrl}";
+    }
+    ViewData["SocialImage"] = coverImageUrl;
+    var bookStructuredData = new Dictionary<string, object?>
+    {
+        ["@context"] = "https://schema.org",
+        ["@type"] = "Book",
+        ["name"] = Model.Title,
+        ["author"] = new Dictionary<string, string>
+        {
+            ["@type"] = "Person",
+            ["name"] = Model.Author.Name
+        },
+        ["genre"] = Model.Genre,
+        ["datePublished"] = Model.YearPublished.ToString(),
+        ["numberOfPages"] = Model.Pages,
+        ["publisher"] = new Dictionary<string, string>
+        {
+            ["@type"] = "Organization",
+            ["name"] = Model.PublisherName
+        }
+    };
+    if (coverImageUrl is not null)
+    {
+        bookStructuredData["image"] = coverImageUrl;
+    }
     var authorBookCount = (int)(ViewBag.AuthorBookCount ?? 0);
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
+}
+
+@section Head {
+    <script type="application/ld+json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bookStructuredData))</script>
 }
 
 @section Styles {

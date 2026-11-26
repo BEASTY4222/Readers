@@ -1,9 +1,38 @@
 ﻿<!DOCTYPE html>
+@{
+    var pageTitle = ViewData["Title"] as string;
+    var metaTitle = string.IsNullOrWhiteSpace(pageTitle) ? "Readers" : $"{pageTitle} | Readers";
+    var metaDescription = ViewData["MetaDescription"] as string
+        ?? "Discover books, share what you love, and connect with other readers on Readers.";
+    var robots = ViewData["Robots"] as string ?? "index,follow";
+    var canonicalUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}{Context.Request.Path}";
+    var socialImage = ViewData["SocialImage"] as string;
+}
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Readers</title>
+    <meta name="description" content="@metaDescription" />
+    <meta name="robots" content="@robots" />
+    <link rel="canonical" href="@canonicalUrl" />
+    <title>@metaTitle</title>
+    <meta property="og:type" content="@(ViewData["OgType"] as string ?? "website")" />
+    <meta property="og:title" content="@metaTitle" />
+    <meta property="og:description" content="@metaDescription" />
+    <meta property="og:url" content="@canonicalUrl" />
+    @if (!string.IsNullOrWhiteSpace(socialImage))
+    {
+        <meta property="og:image" content="@socialImage" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="@socialImage" />
+    }
+    else
+    {
+        <meta name="twitter:card" content="summary" />
+    }
+    <meta name="twitter:title" content="@metaTitle" />
+    <meta name="twitter:description" content="@metaDescription" />
+    @await RenderSectionAsync("Head", required: false)
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
