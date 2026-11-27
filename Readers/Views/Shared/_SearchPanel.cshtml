@@ -28,7 +28,8 @@
             <input type="text"
                    id="searchTitle"
                    name="searchedTitle"
-                   placeholder="@Context.Request.Query["searchedTitle"]"
+                   value="@Model.SearchFilters.SearchedTitle"
+                   placeholder="Title"
                    autocomplete="off" />
         </div>
 
@@ -37,7 +38,8 @@
             <input type="text"
                    id="searchedAuthor"
                    name="searchedAuthor"
-                   placeholder="@Context.Request.Query["searchedAuthor"]"
+                   value="@Model.SearchFilters.SearchedAuthor"
+                   placeholder="Author"
                    autocomplete="on" />
         </div>
 
@@ -45,9 +47,9 @@
             <label for="searchedGenre">Genre</label>
             <select id="searchedGenre" name="searchedGenre">
                 <option value="">All genres</option>
-                @foreach (var genre in Model)
+                @foreach (var genre in Model.Genres)
                 {
-                    <option value="@genre">@genre</option>
+                    <option value="@genre" selected="@(Model.SearchFilters.SearchedGenre == genre ? "selected" : null)">@genre</option>
                 }
             </select>
         </div>
