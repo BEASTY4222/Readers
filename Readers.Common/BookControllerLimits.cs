@@ -2,6 +2,6 @@
 {
     public class BookControllerLimits
     {
-        public const int MaxBooksToDisplay = 40;
+        public const int BooksPerPage = 16;
     }
 }
