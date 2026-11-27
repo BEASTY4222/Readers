@@ -34,7 +34,7 @@ public class BookServiceTests
     }
 
     [Test]
-    public async Task GetAllBooks_OrdersByAuthorThenPublicationYear()
+    public async Task GetBooksPageAsync_OrdersByAuthorThenPublicationYear()
     {
         await using var context = CreateContext();
         context.Books.AddRange(
@@ -43,9 +43,12 @@ public class BookServiceTests
             CreateBook("Older", "Author A", "Fiction", 2018));
         await context.SaveChangesAsync();
 
-        var books = (await new BookService(context).GetAllBooks()).ToList();
+        var page = await new BookService(context).GetBooksPageAsync(null, null, null, 1);
 
-        Assert.That(books.Select(book => book.Title), Is.EqualTo(new[] { "Older", "Newer", "Later" }));
+        Assert.That(page.Books.Select(book => book.Title), Is.EqualTo(new[] { "Older", "Newer", "Later" }));
+        Assert.That(page.TotalCount, Is.EqualTo(3));
+        Assert.That(page.TotalPages, Is.EqualTo(1));
+        Assert.That(page.PageSize, Is.EqualTo(16));
     }
 
     [Test]
@@ -64,20 +67,31 @@ public class BookServiceTests
     }
 
     [Test]
-    public async Task SearchAsync_NormalizesTitleAndAuthorAndAppliesGenre()
+    public async Task GetBooksPageAsync_FiltersBeforePagingAndReturnsFilteredCount()
     {
         await using var context = CreateContext();
+        var matchingBooks = Enumerable.Range(1, 35)
+            .Select(year => CreateBook($"The Silver Shore {year}", "Jane Writer", "Fantasy", 2000 + year))
+            .ToList();
+        context.Books.AddRange(matchingBooks);
         context.Books.AddRange(
-            CreateBook("The Silver Shore", "Jane Writer", "Fantasy", 2000),
-            CreateBook("The Silver Shore", "Jane Writer", "History", 2001),
-            CreateBook("Other Book", "Jane Writer", "Fantasy", 2002));
+            CreateBook("The Silver Shore History", "Jane Writer", "History", 2040),
+            CreateBook("Other Book", "Jane Writer", "Fantasy", 2041));
         await context.SaveChangesAsync();
 
-        var matches = (await new BookService(context).SearchAsync("silvershore", "janewriter", "Fantasy")).ToList();
+        var service = new BookService(context);
+        var firstPage = await service.GetBooksPageAsync("silvershore", "janewriter", "Fantasy", 1);
+        var secondPage = await service.GetBooksPageAsync("silvershore", "janewriter", "Fantasy", 2);
+        var lastPage = await service.GetBooksPageAsync("silvershore", "janewriter", "Fantasy", 99);
 
-        Assert.That(matches, Has.Count.EqualTo(1));
-        Assert.That(matches[0].Title, Is.EqualTo("The Silver Shore"));
-        Assert.That(matches[0].Genre, Is.EqualTo("Fantasy"));
+        Assert.That(firstPage.Books, Has.Count.EqualTo(16));
+        Assert.That(secondPage.Books, Has.Count.EqualTo(16));
+        Assert.That(lastPage.Books, Has.Count.EqualTo(3));
+        Assert.That(firstPage.TotalCount, Is.EqualTo(35));
+        Assert.That(firstPage.TotalPages, Is.EqualTo(3));
+        Assert.That(lastPage.PageNumber, Is.EqualTo(3));
+        Assert.That(firstPage.Books.Select(book => book.Id).Intersect(secondPage.Books.Select(book => book.Id)), Is.Empty);
+        Assert.That(firstPage.Books.All(book => book.Genre == "Fantasy" && book.Author.Name == "Jane Writer"), Is.True);
     }
 
     [Test]
