@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Readers.Common;
 using Readers.Core.Contracts;
+using Readers.Core.DTOs;
 using Readers.Data;
 using Readers.Data.DataModels;
 
@@ -13,22 +14,6 @@ namespace Readers.Core.Services
     /// </summary>
     public class BookService(ApplicationDbContext context) : IBookService
     {
-        /// <summary>
-        /// Retrieves all books from the database with their associated author, likes, and comments data.
-        /// </summary>
-        /// <returns>A collection of all books ordered by author name, then by year published, limited to MaxBooksToDisplay.</returns>
-        public async Task<IEnumerable<Book>> GetAllBooks()
-        {
-            return await context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Likes)
-                .Include(b => b.Comments)
-                .OrderBy(b => b.Author.Name)
-                .ThenBy(b => b.YearPublished)
-                .Take(BookControllerLimits.MaxBooksToDisplay)
-                .ToListAsync();
-        }
-
         /// <summary>
         /// Retrieves all distinct genre values from the books in the database.
         /// </summary>
@@ -88,38 +73,53 @@ namespace Readers.Core.Services
         /// Search normalization: titles and author names are converted to lowercase and whitespace is removed 
         /// to provide a more user-friendly search experience that tolerates spacing differences.
         /// </remarks>
-        public async Task<IEnumerable<Book>> SearchAsync(string? title, string? author, string? genre)
+        public async Task<PagedBooksResult> GetBooksPageAsync(string? title, string? author, string? genre, int pageNumber)
         {
-            var query = context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Likes)
-                .Include(b => b.Comments)
-                .AsQueryable();
+            IQueryable<Book> query = context.Books.AsQueryable();
 
             // Filter by normalized title if provided
-            if (!string.IsNullOrEmpty(title))
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                var normalized = title.Replace(" ", "").ToLower();
+                string normalized = title.Replace(" ", "").ToLower();
                 query = query.Where(b => b.Title.Replace(" ", "").ToLower().Contains(normalized));
             }
 
             // Filter by normalized author name if provided
-            if (!string.IsNullOrEmpty(author))
+            if (!string.IsNullOrWhiteSpace(author))
             {
                 var normalized = author.Replace(" ", "").ToLower();
                 query = query.Where(b => b.Author.Name.Replace(" ", "").ToLower().Contains(normalized));
             }
 
             // Filter by exact genre match if provided
-            if (!string.IsNullOrEmpty(genre))
+            if (!string.IsNullOrWhiteSpace(genre))
             {
                 query = query.Where(b => b.Genre == genre);
             }
 
-            return await query
+            int totalCount = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalCount / BookControllerLimits.BooksPerPage);
+            pageNumber = Math.Clamp(pageNumber, 1, Math.Max(totalPages, 1));
+
+            List<Book> books = await query
+                .Include(b => b.Author)
+                .Include(b => b.Likes)
+                .Include(b => b.Comments)
                 .OrderBy(b => b.Author.Name)
-                .Take(BookControllerLimits.MaxBooksToDisplay)
+                .ThenBy(b => b.YearPublished)
+                .ThenBy(b => b.Title)
+                .ThenBy(b => b.Id)
+                .Skip((pageNumber - 1) * BookControllerLimits.BooksPerPage)
+                .Take(BookControllerLimits.BooksPerPage)
                 .ToListAsync();
+
+            return new PagedBooksResult
+            {
+                Books = books,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = BookControllerLimits.BooksPerPage
+            };
         }
 
         /// <summary>
