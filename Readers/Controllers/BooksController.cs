@@ -30,30 +30,9 @@ namespace Readers.Web.Controllers
         /// to enable filtering functionality.
         /// </remarks>
         [Route("/Books")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
-            // Retrieve all books from database (respects MaxBooksToDisplay limit as of 26.09.2026)
-            List<Book> books = (await BookService.GetAllBooks()).ToList();
-
-            // Map Book entities to BookViewModels for safe presentation to the view layer
-            List<BookViewModel> bookViewModels = books
-            .Select(b => new BookViewModel
-            {
-                Id = b.Id,
-                CoverImagePath = b.CoverImagePath,
-                Title = b.Title,
-                Author = b.Author,
-                Likes = b.Likes,
-                Genre = b.Genre,
-                Comments = b.Comments
-            })
-            .ToList();
-
-            return View(new BookIndexViewModel
-            {
-                Books = bookViewModels,
-                Genres = (await BookService.GetGenres()).ToList()
-            });
+            return View(await CreateBookIndexViewModelAsync(new SearchFormInputModel(), pageNumber));
         }
 
         /// <summary>
@@ -66,18 +45,23 @@ namespace Readers.Web.Controllers
         /// Returns results ordered by author name. If no filters are provided, returns all available books.
         /// </remarks>
         [HttpGet]
-        public async Task<IActionResult> Search(SearchFormInputModel model)
+        public async Task<IActionResult> Search(SearchFormInputModel model, int pageNumber = 1)
         {
-            // Execute search query with provided filters (title, author, genre)
-            var books = await BookService.SearchAsync(
-                model.SearchedTitle,
-                model.SearchedAuthor,
-                model.SearchedGenre);
+            return View("Index", await CreateBookIndexViewModelAsync(model, pageNumber));
+        }
 
-            // Transform domain models to view models for safe presentation
-            var viewModel = new BookIndexViewModel
+        private async Task<BookIndexViewModel> CreateBookIndexViewModelAsync(SearchFormInputModel filters, int pageNumber)
+        {
+            var page = await BookService.GetBooksPageAsync(
+                filters.SearchedTitle,
+                filters.SearchedAuthor,
+                filters.SearchedGenre,
+                pageNumber);
+
+            return new BookIndexViewModel
             {
-                Books = books.Select(b => new BookViewModel {
+                Books = page.Books.Select(b => new BookViewModel
+                {
                     Id = b.Id,
                     CoverImagePath = b.CoverImagePath,
                     Title = b.Title,
@@ -86,11 +70,12 @@ namespace Readers.Web.Controllers
                     Genre = b.Genre,
                     Comments = b.Comments
                 }).ToList(),
-
-                Genres = (await BookService.GetGenres()).ToList()
+                Genres = (await BookService.GetGenres()).ToList(),
+                SearchFilters = filters,
+                CurrentPage = page.PageNumber,
+                TotalPages = page.TotalPages,
+                TotalBooks = page.TotalCount
             };
-
-            return View("Index", viewModel);
         }
 
         /// <summary>
