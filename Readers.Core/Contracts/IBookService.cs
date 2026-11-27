@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readers.Core.DTOs;
 using Readers.Data;
 using Readers.Data.DataModels;
 using System;
@@ -15,11 +16,14 @@ namespace Readers.Core.Contracts
     public interface IBookService
     {
         /// <summary>
-        /// Retrieves all books from the database with related entities (author, likes, comments).
+        /// Retrieves a page of books matching optional title, author, and genre filters.
         /// </summary>
-        /// <returns>An enumerable collection of all books ordered by author name and year published.</returns>
-        /// <remarks>Results are limited to MaxBooksToDisplay as per application configuration.</remarks>
-        Task<IEnumerable<Book>> GetAllBooks();
+        /// <param name="title">Optional title search term.</param>
+        /// <param name="author">Optional author search term.</param>
+        /// <param name="genre">Optional exact genre match.</param>
+        /// <param name="pageNumber">The one-based page number to retrieve.</param>
+        /// <returns>The matching books for the requested page and pagination metadata.</returns>
+        Task<PagedBooksResult> GetBooksPageAsync(string? title, string? author, string? genre, int pageNumber);
 
         /// <summary>
         /// Retrieves all distinct genres available in the database.
@@ -48,19 +52,6 @@ namespace Readers.Core.Contracts
         /// <returns>The book object if found; null if the book does not exist.</returns>
         /// <remarks>Includes related entities: author, likes, and comments with user information.</remarks>
         Task<Book?> GetByIdAsync(Guid id);
-
-        /// <summary>
-        /// Searches for books based on optional title, author, and genre criteria.
-        /// </summary>
-        /// <param name="title">Optional book title search term (case-insensitive, ignores whitespace).</param>
-        /// <param name="author">Optional author name search term (case-insensitive, ignores whitespace).</param>
-        /// <param name="genre">Optional exact genre match.</param>
-        /// <returns>An enumerable collection of matching books ordered by author name.</returns>
-        /// <remarks>
-        /// If no criteria are provided, returns all available books. 
-        /// Results are limited to MaxBooksToDisplay as per application configuration.
-        /// </remarks>
-        Task<IEnumerable<Book>> SearchAsync(string? title, string? author, string? genre);
 
         /// <summary>
         /// Toggles the like status for a book by a specific user.
