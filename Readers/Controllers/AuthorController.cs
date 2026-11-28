@@ -12,7 +12,8 @@ namespace Readers.Web.Controllers
         // GET: /Authors
         public async Task<IActionResult> Index()
         {
-            List<AuthorListViewModel> authors = await context.Authors
+            // 1. Fetch and map all authors
+            List<AuthorListViewModel> allAuthors = await context.Authors
                 .Include(a => a.Books)
                 .OrderBy(a => a.Name)
                 .Select(a => new AuthorListViewModel
@@ -25,7 +26,20 @@ namespace Readers.Web.Controllers
                 })
                 .ToListAsync();
 
-            return View(authors);
+            // 2. Pick the top 3 "Fan Favorites" (e.g., authors with the most books)
+            List<AuthorListViewModel> featuredAuthors = allAuthors
+                .OrderByDescending(a => a.BookCount)
+                .Take(3)
+                .ToList();
+
+            // 3. Build the final ViewModel
+            AuthorsIndexViewModel viewModel = new AuthorsIndexViewModel
+            {
+                FeaturedAuthors = featuredAuthors,
+                AllAuthors = allAuthors
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
