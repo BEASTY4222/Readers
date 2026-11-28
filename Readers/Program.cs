@@ -18,6 +18,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IShelfService, ShelfService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 // Configure database context and Entity Framework Core
 ApplyDBContext(builder);
