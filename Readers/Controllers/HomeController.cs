@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Readers.Web.ViewModels;
+using Readers.Web.ViewModels.SharedViewModels;
 using System.Diagnostics;
 
 namespace Readers.Web.Controllers

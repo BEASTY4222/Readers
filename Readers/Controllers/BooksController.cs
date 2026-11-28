@@ -7,9 +7,9 @@ using Readers.Common;
 using Readers.Core.Contracts;
 using Readers.Data;
 using Readers.Data.DataModels;
-using Readers.Web.ViewModels;
 using System.Linq;
 using Readers.Web.Filters;
+using Readers.Web.ViewModels.BookViewModels;
 
 namespace Readers.Web.Controllers
 {

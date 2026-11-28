@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Readers.Data;
 using Readers.Data.DataModels;
-using Readers.Web.ViewModels;
+using Readers.Web.ViewModels.AuthorViewModels;
 
 namespace Readers.Web.Controllers
 {
