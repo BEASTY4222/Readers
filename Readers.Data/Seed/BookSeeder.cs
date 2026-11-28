@@ -102,7 +102,8 @@
                     new Book { Title = "Words of Radiance",     Author = sanderson, Publisher = tor,        Genre = "Fantasy", YearPublished = 2014, Pages = 1087, CoverImagePath = "https://pub-ca6d55b9471c427cadc570b86113a1a6.r2.dev/Books/WordsOfRadiance.webp" },
                     new Book { Title = "Oathbringer",           Author = sanderson, Publisher = tor,        Genre = "Fantasy", YearPublished = 2017, Pages = 1248, CoverImagePath = "https://pub-ca6d55b9471c427cadc570b86113a1a6.r2.dev/Books/Oathbringer.webp" },
                     new Book { Title = "Rhythm of War",      Author = sanderson, Publisher = tor,        Genre = "Fantasy", YearPublished = 2020, Pages = 1232, CoverImagePath = "https://pub-ca6d55b9471c427cadc570b86113a1a6.r2.dev/Books/RhythmOfWar.webp" },
-
+                    new Book { Title = "Wind and Truth",          Author = sanderson, Publisher = tor,        Genre = "Fantasy", YearPublished = 2020, Pages = 1232, CoverImagePath = "https://pub-ca6d55b9471c427cadc570b86113a1a6.r2.dev/Books/WindAndTruth.webp" },
+                   
                     // ===== George Orwell =====
                     new Book { Title = "Animal Farm",           Author = orwell,    Publisher = seckerWarburg, Genre = "Political Satire", YearPublished = 1945, Pages = 112, CoverImagePath = "https://pub-ca6d55b9471c427cadc570b86113a1a6.r2.dev/Books/AnimalFarm.webp" },
 
