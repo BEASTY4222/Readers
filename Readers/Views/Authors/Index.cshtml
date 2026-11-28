@@ -1,4 +1,4 @@
-﻿@model List<Readers.Web.ViewModels.AuthorListViewModel>
+﻿@model Readers.Web.ViewModels.AuthorsIndexViewModel
 @{
     ViewData["Title"] = "Authors";
 }
@@ -15,7 +15,7 @@
             <p class="subtitle">Discover the brilliant minds behind your favorite books</p>
         </header>
 
-        @if (Model.Count == 0)
+        @if (Model.AllAuthors.Count == 0)
         {
             <div class="empty-state">
                 <p>No authors have been added yet.</p>
@@ -23,48 +23,83 @@
         }
         else
         {
-            <div class="authors-grid">
-                @foreach (var author in Model)
-                {
-                    <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.Id" class="author-card-link">
-                        <article class="author-card">
-                            
-                            <div class="author-image-wrap">
-                                @if (!string.IsNullOrEmpty(author.ImageUrl))
-                                {
-                                    <img src="@author.ImageUrl" alt="@author.Name" class="author-image" loading="lazy" />
-                                }
-                                else
-                                {
-                                    <div class="author-image-placeholder">
-                                        @{
-                                            var initials = string.Concat(
-                                                author.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                                                    .Take(2)
-                                                    .Select(p => p[0])
-                                            );
-                                        }
-                                        <span>@initials</span>
-                                    </div>
-                                }
-                            </div>
+            <!-- 🌟 FEATURED AUTHORS SECTION -->
+            <div class="featured-authors-section">
+                <h2 class="section-heading">🌟 Fan Favorites</h2>
+                <div class="featured-authors-grid">
+                    @foreach (var author in Model.FeaturedAuthors)
+                    {
+                        <a asp-action="Details" asp-route-id="@author.Id" class="featured-author-link">
+                            <article class="featured-author-card">
+                                <div class="featured-image-wrap">
+                                    @if (!string.IsNullOrEmpty(author.ImageUrl))
+                                    {
+                                        <img src="@author.ImageUrl" alt="@author.Name" class="featured-image" />
+                                    }
+                                    else
+                                    {
+                                        <div class="featured-placeholder">
+                                            @{
+                                                var initials = string.Concat(author.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(p => p[0]));
+                                            }
+                                            <span>@initials</span>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="featured-info">
+                                    <h3>@author.Name</h3>
+                                    @if (!string.IsNullOrEmpty(author.Country))
+                                    {
+                                        <p class="featured-country">@author.Country</p>
+                                    }
+                                    <span class="featured-badge">@author.BookCount Books</span>
+                                </div>
+                            </article>
+                        </a>
+                    }
+                </div>
+            </div>
 
-                            <div class="author-info">
-                                <h3 class="author-name">@author.Name</h3>
-                                
-                                @if (!string.IsNullOrEmpty(author.Country))
-                                {
-                                    <p class="author-country">@author.Country</p>
-                                }
-                                
-                                <p class="author-book-count">
-                                    @author.BookCount book@(author.BookCount == 1 ? "" : "s") on Readers
-                                </p>
-                            </div>
+            <hr class="authors-divider" />
 
-                        </article>
-                    </a>
-                }
+            <!-- 📚 ALL AUTHORS SECTION -->
+            <div class="all-authors-section">
+                <h2 class="section-heading">All Authors</h2>
+                <div class="authors-grid">
+                    @foreach (var author in Model.AllAuthors)
+                    {
+                        <a asp-action="Details" asp-route-id="@author.Id" class="author-card-link">
+                            <article class="author-card">
+                                <div class="author-image-wrap">
+                                    @if (!string.IsNullOrEmpty(author.ImageUrl))
+                                    {
+                                        <img src="@author.ImageUrl" alt="@author.Name" class="author-image" loading="lazy" />
+                                    }
+                                    else
+                                    {
+                                        <div class="author-image-placeholder">
+                                            @{
+                                                var initials = string.Concat(author.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(p => p[0]));
+                                            }
+                                            <span>@initials</span>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="author-info">
+                                    <h3 class="author-name">@author.Name</h3>
+                                    @if (!string.IsNullOrEmpty(author.Country))
+                                    {
+                                        <p class="author-country">@author.Country</p>
+                                    }
+                                    <p class="author-book-count">
+                                        @author.BookCount book@(author.BookCount == 1 ? "" : "s")
+                                    </p>
+                                </div>
+                            </article>
+                        </a>
+                    }
+                </div>
             </div>
         }
     </div>
