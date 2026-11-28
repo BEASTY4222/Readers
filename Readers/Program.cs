@@ -1,3 +1,5 @@
+using Amazon.Runtime;
+using Amazon.S3;
 using Microsoft.AspNetCore.Identity;
 // Localization/Globalization usings
 using Microsoft.AspNetCore.Localization;
@@ -8,6 +10,7 @@ using Readers.Core.Services;
 using Readers.Data;
 using Readers.Data.DataModels;
 using Readers.Data.Seed;
+using Readers.Web.Services;
 
 // Build the ASP.NET Core application configuration
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -24,6 +27,8 @@ ApplyDBContext(builder);
 RequestLocalizationOptions localizationOptions = new RequestLocalizationOptions();
 ApplyLocalization(builder, localizationOptions);
 
+// Configure Cloudflare R2 for image storage and register the image service
+ConfigureCouldflareR2(builder);
 
 // Build the web application instance
 var app = builder.Build();
@@ -168,4 +173,27 @@ static async Task SeedDB(System.IServiceProvider serviceProvider)
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         await BookSeeder.SeedAsync(context, userManager, roleManager);
     }
+}
+
+static void ConfigureCouldflareR2(IHostApplicationBuilder builder)
+{
+    // --- CLOUDFLARE R2 CONFIGURATION ---
+    IConfigurationSection r2Config = builder.Configuration.GetSection("CloudflareR2");
+    string accessKey = r2Config["AccessKey"];
+    string secretKey = r2Config["SecretKey"];
+    string serviceUrl = r2Config["ServiceUrl"];
+
+    BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+    AmazonS3Config s3Config = new AmazonS3Config
+    {
+        ServiceURL = serviceUrl,
+        ForcePathStyle = true,
+        AuthenticationRegion = "auto" // Required for R2
+    };
+
+    // Register the S3 client
+    builder.Services.AddSingleton<IAmazonS3>(new AmazonS3Client(awsCredentials, s3Config));
+
+    // Register your custom Image Service
+    builder.Services.AddScoped<IImageService, ImageService>();
 }
