@@ -1,35 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Readers.Data;
-using Readers.Data.DataModels;
 using Readers.Web.ViewModels.AuthorViewModels;
+using Readers.Core.Contracts;
+using Readers.Core.DTOs.Output.AuthorDTOs;
 
 namespace Readers.Web.Controllers
 {
-    public class AuthorsController(ApplicationDbContext context) : Controller
+    public class AuthorsController(IAuthorService authorService) : Controller
     {
 
         // GET: /Authors
         public async Task<IActionResult> Index()
         {
             // 1. Fetch and map all authors
-            List<AuthorListViewModel> allAuthors = await context.Authors
-                .Include(a => a.Books)
-                .OrderBy(a => a.Name)
-                .Select(a => new AuthorListViewModel
+            List<AuthorListViewModel> allAuthors = (await authorService.GetAllAuthorsAsync())
+                .Select(author => new AuthorListViewModel
                 {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Country = a.Country,
-                    ImageUrl = a.ImageUrl,
-                    BookCount = a.Books.Count
+                    Id = author.Id,
+                    Name = author.Name,
+                    Country = author.Country,
+                    ImageUrl = author.ImageUrl,
+                    BookCount = author.BookCount
                 })
-                .ToListAsync();
+                .ToList();
 
             // 2. Pick the top 3 "Fan Favorites" (e.g., authors with the most books)
-            List<AuthorListViewModel> featuredAuthors = allAuthors
-                .OrderByDescending(a => a.BookCount)
-                .Take(3)
+            List<AuthorListViewModel> featuredAuthors = (await authorService.GetFeaturedAuthorsAsync())
+                .Select(author => new AuthorListViewModel
+                {
+                    Id = author.Id,
+                    Name = author.Name,
+                    Country = author.Country,
+                    ImageUrl = author.ImageUrl,
+                    BookCount = author.BookCount
+                })
                 .ToList();
 
             // 3. Build the final ViewModel
@@ -45,37 +48,29 @@ namespace Readers.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            // Fetch the author, including their books, likes, and comments
-            Author? author = await context.Authors
-                .Include(a => a.Books)
-                    .ThenInclude(b => b.Likes)
-                .Include(a => a.Books)
-                    .ThenInclude(b => b.Comments)
-                .FirstOrDefaultAsync(a => a.Id == id);
+            AuthorDetailsDTO? author = await authorService.GetAuthorDetailsAsync(id);
 
             if (author == null)
             {
                 return NotFound();
             }
 
-            // Map to the ViewModel
             AuthorDetailsViewModel viewModel = new AuthorDetailsViewModel
             {
                 Id = author.Id,
                 Name = author.Name,
                 Country = author.Country,
                 ImageUrl = author.ImageUrl,
-                TotalBooks = author.Books.Count,
+                TotalBooks = author.TotalBooks,
                 Books = author.Books
-                    .OrderByDescending(b => b.YearPublished)
-                    .Select(b => new AuthorBookViewModel
+                    .Select(book => new AuthorBookViewModel
                     {
-                        Id = b.Id,
-                        Title = b.Title,
-                        CoverImagePath = b.CoverImagePath,
-                        YearPublished = b.YearPublished,
-                        LikeCount = b.Likes.Count,
-                        CommentCount = b.Comments.Count
+                        Id = book.Id,
+                        Title = book.Title,
+                        CoverImagePath = book.CoverImagePath,
+                        YearPublished = book.YearPublished,
+                        LikeCount = book.LikeCount,
+                        CommentCount = book.CommentCount
                     }).ToList()
             };
 
