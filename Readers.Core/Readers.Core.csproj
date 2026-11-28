@@ -14,4 +14,9 @@
     <Folder Include="DTOs\Output\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="4.1.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
 </Project>
