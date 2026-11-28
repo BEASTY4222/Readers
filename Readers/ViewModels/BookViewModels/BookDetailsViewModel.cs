@@ -2,7 +2,7 @@
 using Readers.Data.DataModels;
 using System.ComponentModel.DataAnnotations;
 
-namespace Readers.Web.ViewModels
+namespace Readers.Web.ViewModels.BookViewModels
 {
     public class BookDetailsViewModel
     {

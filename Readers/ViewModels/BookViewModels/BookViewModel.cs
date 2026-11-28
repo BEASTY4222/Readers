@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Readers.Data.DataModels;
 
-namespace Readers.Web.ViewModels
+namespace Readers.Web.ViewModels.BookViewModels
 {
     /// <summary>
     /// Represents a book for display in the view layer.

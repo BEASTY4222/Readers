@@ -1,4 +1,4 @@
-namespace Readers.Web.ViewModels
+namespace Readers.Web.ViewModels.BookViewModels
 {
     public class BookIndexViewModel
     {
