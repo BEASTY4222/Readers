@@ -1,0 +1,71 @@
+﻿@model List<Readers.Web.ViewModels.AuthorListViewModel>
+@{
+    ViewData["Title"] = "Authors";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AuthorsPage.css" asp-append-version="true" />
+}
+
+<div class="authors-page">
+    <div class="authors-container">
+
+        <header class="authors-header">
+            <h1>Authors</h1>
+            <p class="subtitle">Discover the brilliant minds behind your favorite books</p>
+        </header>
+
+        @if (Model.Count == 0)
+        {
+            <div class="empty-state">
+                <p>No authors have been added yet.</p>
+            </div>
+        }
+        else
+        {
+            <div class="authors-grid">
+                @foreach (var author in Model)
+                {
+                    <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.Id" class="author-card-link">
+                        <article class="author-card">
+                            
+                            <div class="author-image-wrap">
+                                @if (!string.IsNullOrEmpty(author.ImageUrl))
+                                {
+                                    <img src="@author.ImageUrl" alt="@author.Name" class="author-image" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <div class="author-image-placeholder">
+                                        @{
+                                            var initials = string.Concat(
+                                                author.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                                    .Take(2)
+                                                    .Select(p => p[0])
+                                            );
+                                        }
+                                        <span>@initials</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="author-info">
+                                <h3 class="author-name">@author.Name</h3>
+                                
+                                @if (!string.IsNullOrEmpty(author.Country))
+                                {
+                                    <p class="author-country">@author.Country</p>
+                                }
+                                
+                                <p class="author-book-count">
+                                    @author.BookCount book@(author.BookCount == 1 ? "" : "s") on Readers
+                                </p>
+                            </div>
+
+                        </article>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</div>
