@@ -43,6 +43,8 @@ namespace Readers.Data.DataModels
         /// Virtual collection for lazy loading or eager loading with Include().
         /// Initialized to an empty list by default.
         /// </remarks>
+        public string? ImageUrl { get; set; }
+
         public virtual ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }
