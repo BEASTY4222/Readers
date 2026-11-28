@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="4.1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.15" />
   </ItemGroup>
 
 </Project>
