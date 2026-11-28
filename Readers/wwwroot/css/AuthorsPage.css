@@ -1,0 +1,315 @@
+﻿/* ============================================
+   Authors Page
+   ============================================ */
+
+:root {
+    --authors-bg: #f7f5f2;
+    --authors-card: #ffffff;
+    --authors-accent: #7c4d2f;
+    --authors-accent-hover: #5e3a23;
+    --authors-accent-soft: #f0e6dd;
+    --authors-text: #2d2a26;
+    --authors-muted: #6b6560;
+    --authors-border: #e8e2db;
+    --authors-radius: 16px;
+    --authors-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --authors-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Page wrapper ---------- */
+.authors-page {
+    background: var(--authors-bg);
+    padding: 3rem 1.25rem 4rem;
+    min-height: 100vh;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--authors-text);
+    line-height: 1.6;
+}
+
+.authors-container {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.authors-header {
+    margin-bottom: 2.5rem;
+}
+
+    .authors-header h1 {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 700;
+        margin: 0 0 0.25rem;
+        color: var(--authors-text);
+    }
+
+    .authors-header .subtitle {
+        color: var(--authors-muted);
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* ---------- Grid ---------- */
+.authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+/* ---------- Card Link Wrapper ---------- */
+.author-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: var(--authors-radius);
+    transition: transform 0.25s ease;
+}
+
+    .author-card-link:hover {
+        color: inherit;
+        text-decoration: none;
+        transform: translateY(-4px);
+    }
+
+    .author-card-link:focus-visible {
+        outline: 3px solid var(--authors-accent);
+        outline-offset: 4px;
+    }
+
+/* ---------- Card ---------- */
+.author-card {
+    background: var(--authors-card);
+    border-radius: var(--authors-radius);
+    box-shadow: var(--authors-shadow);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    transition: box-shadow 0.25s ease;
+}
+
+.author-card-link:hover .author-card {
+    box-shadow: var(--authors-shadow-hover);
+}
+
+/* ---------- Image ---------- */
+.author-image-wrap {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--authors-accent-soft);
+}
+
+.author-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.author-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--authors-accent);
+    letter-spacing: 0.05em;
+}
+
+/* ---------- Info ---------- */
+.author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.author-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--authors-text);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.author-country {
+    font-size: 0.9rem;
+    color: var(--authors-muted);
+    margin: 0;
+}
+
+.author-book-count {
+    font-size: 0.85rem;
+    color: var(--authors-accent);
+    font-weight: 500;
+    margin: 0.5rem 0 0;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--authors-border);
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--authors-muted);
+    font-size: 1.05rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .authors-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+
+    .authors-page {
+        padding: 2rem 0.9rem 3rem;
+    }
+
+    .author-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .author-image-wrap {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 1rem;
+    }
+
+    .author-image-placeholder {
+        font-size: 1.5rem;
+    }
+
+    .author-name {
+        font-size: 1rem;
+    }
+
+    .author-country, .author-book-count {
+        font-size: 0.8rem;
+    }
+}
+
+/* ============================================
+   Author Details Page
+   ============================================ */
+
+.author-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.author-profile-image-wrap {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+    background: var(--authors-accent-soft);
+}
+
+.author-profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-profile-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--authors-accent);
+}
+
+.author-profile-info {
+    flex-grow: 1;
+}
+
+.author-profile-name {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--authors-text);
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+}
+
+.author-profile-country {
+    font-size: 1.1rem;
+    color: var(--authors-muted);
+    margin-bottom: 1rem;
+}
+
+.author-profile-stats {
+    margin-bottom: 1.5rem;
+}
+
+.stat-badge {
+    background: var(--authors-accent-soft);
+    color: var(--authors-accent);
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-back-authors {
+    display: inline-block;
+    color: var(--authors-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+    .btn-back-authors:hover {
+        color: var(--authors-accent);
+    }
+
+.author-divider {
+    border: none;
+    border-top: 1px solid var(--authors-border);
+    margin: 2rem 0;
+}
+
+.author-books-section {
+    margin-top: 1rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--authors-text);
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive adjustments for profile header */
+@media (max-width: 600px) {
+    .author-profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .author-profile-image-wrap {
+        width: 140px;
+        height: 140px;
+    }
+
+    .author-profile-placeholder {
+        font-size: 2.5rem;
+    }
+}
